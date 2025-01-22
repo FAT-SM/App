@@ -1,0 +1,8 @@
+# ignore all files...
+*.*
+
+# ... except these:
+
+# Git files
+!.gitignore
+!.gitattributes
