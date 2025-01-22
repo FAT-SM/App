@@ -6,3 +6,9 @@
 # Git files
 !.gitignore
 !.gitattributes
+
+# Visual Studio solution and project files
+!*.sln
+!*.vcxproj
+!*.vcxproj.user
+!*.vcxproj.filters
