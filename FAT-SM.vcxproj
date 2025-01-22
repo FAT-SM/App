@@ -114,6 +114,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Matrix.cpp" />
+    <ClCompile Include="Source\Model\Detail.cpp" />
+    <ClCompile Include="Source\Model\Project.cpp" />
+    <ClCompile Include="Source\Model\SnDetail.cpp" />
     <ClCompile Include="Source\_main_.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +126,10 @@
   <ItemGroup>
     <ClInclude Include="Source\Core.hpp" />
     <ClInclude Include="Source\Core\Matrix.hpp" />
+    <ClInclude Include="Source\Model.hpp" />
+    <QtMoc Include="Source\Model\Project.hpp" />
+    <QtMoc Include="Source\Model\SnDetail.hpp" />
+    <QtMoc Include="Source\Model\Detail.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -7,6 +7,9 @@
     <Filter Include="Source\Core">
       <UniqueIdentifier>{66eb2816-a673-4659-b035-41521d866467}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Model">
+      <UniqueIdentifier>{a51b9e83-6d4e-4c61-86a5-d4e199e1dab7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\_main_.cpp">
@@ -14,6 +17,15 @@
     </ClCompile>
     <ClCompile Include="Source\Core\Matrix.cpp">
       <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model\Detail.cpp">
+      <Filter>Source\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model\SnDetail.cpp">
+      <Filter>Source\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model\Project.cpp">
+      <Filter>Source\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -27,5 +39,19 @@
     <ClInclude Include="Source\Core.hpp">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Model.hpp">
+      <Filter>Source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Source\Model\Detail.hpp">
+      <Filter>Source\Model</Filter>
+    </QtMoc>
+    <QtMoc Include="Source\Model\SnDetail.hpp">
+      <Filter>Source\Model</Filter>
+    </QtMoc>
+    <QtMoc Include="Source\Model\Project.hpp">
+      <Filter>Source\Model</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>
