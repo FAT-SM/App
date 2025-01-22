@@ -10,6 +10,9 @@
     <Filter Include="Source\Model">
       <UniqueIdentifier>{a51b9e83-6d4e-4c61-86a5-d4e199e1dab7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Gui">
+      <UniqueIdentifier>{c2f60665-9d94-4343-b673-20bb42bb442a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\_main_.cpp">
@@ -27,6 +30,21 @@
     <ClCompile Include="Source\Model\Project.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Gui\Gnuplot.cpp">
+      <Filter>Source\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gui\EditTableDialog.cpp">
+      <Filter>Source\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gui\HomeTab.cpp">
+      <Filter>Source\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gui\SnCurveTab.cpp">
+      <Filter>Source\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gui\MainWindow.cpp">
+      <Filter>Source\Gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -42,6 +60,9 @@
     <ClInclude Include="Source\Model.hpp">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Gui.hpp">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Source\Model\Detail.hpp">
@@ -52,6 +73,21 @@
     </QtMoc>
     <QtMoc Include="Source\Model\Project.hpp">
       <Filter>Source\Model</Filter>
+    </QtMoc>
+    <QtMoc Include="Source\Gui\Gnuplot.hpp">
+      <Filter>Source\Gui</Filter>
+    </QtMoc>
+    <QtMoc Include="Source\Gui\EditTableDialog.hpp">
+      <Filter>Source\Gui</Filter>
+    </QtMoc>
+    <QtMoc Include="Source\Gui\HomeTab.hpp">
+      <Filter>Source\Gui</Filter>
+    </QtMoc>
+    <QtMoc Include="Source\Gui\SnCurveTab.hpp">
+      <Filter>Source\Gui</Filter>
+    </QtMoc>
+    <QtMoc Include="Source\Gui\MainWindow.hpp">
+      <Filter>Source\Gui</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

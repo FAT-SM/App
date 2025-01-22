@@ -37,12 +37,12 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.8.1_msvc2022_64</QtInstall>
-    <QtModules>core</QtModules>
+    <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.8.1_msvc2022_64</QtInstall>
-    <QtModules>core</QtModules>
+    <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
   </PropertyGroup>
@@ -114,6 +114,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Matrix.cpp" />
+    <ClCompile Include="Source\Gui\EditTableDialog.cpp" />
+    <ClCompile Include="Source\Gui\Gnuplot.cpp" />
+    <ClCompile Include="Source\Gui\HomeTab.cpp" />
+    <ClCompile Include="Source\Gui\MainWindow.cpp" />
+    <ClCompile Include="Source\Gui\SnCurveTab.cpp" />
     <ClCompile Include="Source\Model\Detail.cpp" />
     <ClCompile Include="Source\Model\Project.cpp" />
     <ClCompile Include="Source\Model\SnDetail.cpp" />
@@ -126,6 +131,12 @@
   <ItemGroup>
     <ClInclude Include="Source\Core.hpp" />
     <ClInclude Include="Source\Core\Matrix.hpp" />
+    <ClInclude Include="Source\Gui.hpp" />
+    <QtMoc Include="Source\Gui\Gnuplot.hpp" />
+    <QtMoc Include="Source\Gui\EditTableDialog.hpp" />
+    <QtMoc Include="Source\Gui\HomeTab.hpp" />
+    <QtMoc Include="Source\Gui\SnCurveTab.hpp" />
+    <QtMoc Include="Source\Gui\MainWindow.hpp" />
     <ClInclude Include="Source\Model.hpp" />
     <QtMoc Include="Source\Model\Project.hpp" />
     <QtMoc Include="Source\Model\SnDetail.hpp" />
