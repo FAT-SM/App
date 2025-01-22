@@ -12,3 +12,10 @@
 !*.vcxproj
 !*.vcxproj.user
 !*.vcxproj.filters
+
+# C++ source files
+!*.cpp
+!*.hpp
+
+# ignore folders
+Build/*
