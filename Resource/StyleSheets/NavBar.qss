@@ -1,0 +1,26 @@
+QListWidget {
+    font-size: 12pt;
+    icon-size: 24px;
+    border: none;
+    outline: none;
+    border-right: 1px solid #D8D8D8;
+    border-bottom: 1px solid #D8D8D8;
+    background-color: #FFFFFF;
+    padding: 2px 0px;
+}
+
+QListWidget::item {
+    padding: 4px;
+    margin: 2px 4px;
+    border-radius: 4px;
+}
+
+QListWidget::item:selected {
+    color: #FFFFFF;
+    background-color: #006CD9;
+}
+
+QListWidget::item:hover:!selected {
+    color: #000000;
+    background-color: #F0F0F0;
+}

@@ -17,5 +17,9 @@
 !*.cpp
 !*.hpp
 
+# resource files
+!*.qrc
+!*.qss
+
 # ignore folders
 Build/*

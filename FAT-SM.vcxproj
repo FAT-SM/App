@@ -127,6 +127,7 @@
   <ItemGroup>
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
+    <None Include="Resource\StyleSheets\NavBar.qss" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core.hpp" />
@@ -141,6 +142,9 @@
     <QtMoc Include="Source\Model\Project.hpp" />
     <QtMoc Include="Source\Model\SnDetail.hpp" />
     <QtMoc Include="Source\Model\Detail.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="Resource\Resource.qrc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

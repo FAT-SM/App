@@ -196,7 +196,7 @@ unset key
     }
 
     // plot
-    _plotter->append("set style line 100 lt 1 lw 2 lc rgb '#1182DC'");
+    _plotter->append("set style line 100 lt 1 lw 2 lc rgb '#006CD9'");
     _plotter->append("plot $snplot with lines ls 100");
     _plotArea->setPixmap(_plotter->plot());
     _outdatedPlot = false;

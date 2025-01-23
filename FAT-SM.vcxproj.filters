@@ -13,6 +13,15 @@
     <Filter Include="Source\Gui">
       <UniqueIdentifier>{c2f60665-9d94-4343-b673-20bb42bb442a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{1fc43a55-bca6-49c9-b138-102058e749d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Graphics">
+      <UniqueIdentifier>{1e9d5322-742e-40f1-9209-74d0f839ca9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\StyleSheets">
+      <UniqueIdentifier>{ffb70fcd-9f3c-4902-a5f3-31592e0596d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\_main_.cpp">
@@ -49,6 +58,9 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include=".gitattributes" />
+    <None Include="Resource\StyleSheets\NavBar.qss">
+      <Filter>Resource\StyleSheets</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Matrix.hpp">
@@ -89,5 +101,10 @@
     <QtMoc Include="Source\Gui\MainWindow.hpp">
       <Filter>Source\Gui</Filter>
     </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="Resource\Resource.qrc">
+      <Filter>Resource</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>

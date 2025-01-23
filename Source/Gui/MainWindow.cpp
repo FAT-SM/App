@@ -42,7 +42,7 @@ void MainWindow::buildGui() {
     _mainNavBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
     _mainNavBar->setSizeAdjustPolicy(QListWidget::AdjustToContents);
     _mainNavBar->setStyleSheet([]() {
-        QFile styleSheet(":/res/qss/MainNavBar.qss");
+        QFile styleSheet(":/StyleSheets/NavBar.qss");
         styleSheet.open(QFile::ReadOnly);
         return styleSheet.readAll();
     }());
@@ -93,11 +93,7 @@ void MainWindow::buildGui() {
     // main stack
     _mainStack = new QStackedWidget(_centralWidget);
     _mainStack->setProperty("parent", "true");
-    _mainStack->setStyleSheet([]() {
-        QFile styleSheet(":/res/qss/MainStack.qss");
-        styleSheet.open(QFile::ReadOnly);
-        return styleSheet.readAll();
-    }());
+    _mainStack->setStyleSheet("QStackedWidget[parent='true'] { border: none; border-bottom: 1px solid #D8D8D8; }");
     _centralWidgetLayout->addWidget(_mainStack, 0, 1, 2, 1);
 
     // home tab
