@@ -61,6 +61,18 @@
     <None Include="Resource\StyleSheets\NavBar.qss">
       <Filter>Resource\StyleSheets</Filter>
     </None>
+    <None Include="Resource\Graphics\Home.svg">
+      <Filter>Resource\Graphics</Filter>
+    </None>
+    <None Include="Resource\Graphics\SnApproach.svg">
+      <Filter>Resource\Graphics</Filter>
+    </None>
+    <None Include="Resource\Graphics\Info.svg">
+      <Filter>Resource\Graphics</Filter>
+    </None>
+    <None Include="Resource\Graphics\PasteTable.svg">
+      <Filter>Resource\Graphics</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Matrix.hpp">
@@ -106,5 +118,10 @@
     <QtRcc Include="Resource\Resource.qrc">
       <Filter>Resource</Filter>
     </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resource\Graphics\ClearTable.svg">
+      <Filter>Resource\Graphics</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -24,13 +24,13 @@ void EditTableDialog::buildGui() {
 
     // paste action
     _pasteAction = new QAction(_toolsMenu);
-    _pasteAction->setIcon(QIcon(":/res/svg/PasteTable.svg"));
+    _pasteAction->setIcon(QIcon(":/Graphics/PasteTable.svg"));
     _pasteAction->setText("Paste from Clipboard");
     _toolsMenu->addAction(_pasteAction);
 
     // clear action
     _clearAction = new QAction(_toolsMenu);
-    _clearAction->setIcon(QIcon(":/res/svg/ClearTable.svg"));
+    _clearAction->setIcon(QIcon(":/Graphics/ClearTable.svg"));
     _clearAction->setText("Clear Table");
     _toolsMenu->addAction(_clearAction);
 

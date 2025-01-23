@@ -127,6 +127,10 @@
   <ItemGroup>
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
+    <None Include="Resource\Graphics\Home.svg" />
+    <None Include="Resource\Graphics\Info.svg" />
+    <None Include="Resource\Graphics\PasteTable.svg" />
+    <None Include="Resource\Graphics\SnApproach.svg" />
     <None Include="Resource\StyleSheets\NavBar.qss" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +149,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="Resource\Resource.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resource\Graphics\ClearTable.svg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

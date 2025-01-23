@@ -50,13 +50,13 @@ void MainWindow::buildGui() {
 
     // home item
     _homeItem = new QListWidgetItem(_mainNavBar);
-    _homeItem->setIcon(QIcon(":/res/svg/Home.svg"));
+    _homeItem->setIcon(QIcon(":/Graphics/Home.svg"));
     _homeItem->setText("Project Home");
     _mainNavBar->addItem(_homeItem);
 
     // s-n detail item
     _snDetailItem = new QListWidgetItem(_mainNavBar);
-    _snDetailItem->setIcon(QIcon(":/res/svg/StressLife.svg"));
+    _snDetailItem->setIcon(QIcon(":/Graphics/SnApproach.svg"));
     _snDetailItem->setText("S-N Approach");
     _mainNavBar->addItem(_snDetailItem);
 

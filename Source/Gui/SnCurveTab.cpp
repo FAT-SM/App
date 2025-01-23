@@ -60,7 +60,7 @@ void SnCurveTab::buildGui() {
 
     // category info label
     _categoryInfoLabel = new QLabel(_categoryGroupBox);
-    _categoryInfoLabel->setPixmap(QIcon(":/res/svg/Info.svg").pixmap(20, 20));
+    _categoryInfoLabel->setPixmap(QIcon(":/Graphics/Info.svg").pixmap(20, 20));
     _categoryInfoLabel->setToolTip("Characteristic reference value of fatigue resistance at 2 million load cycles.");
     _categoryGroupBoxLayout->addWidget(_categoryInfoLabel, 0, 3);
 
@@ -88,7 +88,6 @@ void SnCurveTab::buildGui() {
 
     // edit slopes table button
     _editSlopesTableButton = new QPushButton(_slopesGroupBox);
-    _editSlopesTableButton->setIcon(QIcon(":/res/svg/Edit.svg"));
     _editSlopesTableButton->setText("Edit Table");
     _slopesGroupBoxLayout->addWidget(_editSlopesTableButton, 1, 0);
 
