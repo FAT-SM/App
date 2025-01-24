@@ -27,8 +27,8 @@ private:
     QTableWidget* _slopesTable;
     QPushButton* _editSlopesTableButton;
     QLabel* _plotArea;
-    Gnuplot* _plotter;
     SnDetail* _detail;
+    Gnuplot* _plotter;
     QTimer* _plotTimer;
     bool _outdatedPlot;
 

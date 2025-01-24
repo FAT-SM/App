@@ -6,6 +6,7 @@
 #include "Model.hpp"
 #include "Gui/HomeTab.hpp"
 #include "Gui/SnCurveTab.hpp"
+#include "Gui/HistoryTab.hpp"
 
 /* The main window of the application. */
 class MainWindow : public QMainWindow {
@@ -34,6 +35,7 @@ private:
     QStackedWidget* _mainStack;
     HomeTab* _homeTab;
     SnCurveTab* _snCurveTab;
+    HistoryTab* _historyTab;
     Module _module;
     Project* _project;
     Detail* _detail;

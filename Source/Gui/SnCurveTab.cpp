@@ -209,7 +209,7 @@ SnCurveTab::SnCurveTab(QWidget* parent) : QWidget(parent) {
 
     // create auto refresh timer
     _plotTimer = new QTimer(this);
-    _plotTimer->setInterval(50);
+    _plotTimer->setInterval(100);
     QObject::connect(_plotTimer, &QTimer::timeout, this, [this]() { if (_outdatedPlot) refreshPlot(); });
     _plotTimer->start();
 

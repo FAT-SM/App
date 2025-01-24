@@ -42,7 +42,7 @@ void Project::setDescription(const QString& description) {
     emit modified();
 }
 
-int Project::detailCount() const { return _details.size(); }
+int Project::detailCount() const { return static_cast<int>(_details.size()); }
 
 Detail& Project::detail(int i) { return *_details.at(i); }
 

@@ -116,6 +116,7 @@
     <ClCompile Include="Source\Core\Matrix.cpp" />
     <ClCompile Include="Source\Gui\EditTableDialog.cpp" />
     <ClCompile Include="Source\Gui\Gnuplot.cpp" />
+    <ClCompile Include="Source\Gui\HistoryTab.cpp" />
     <ClCompile Include="Source\Gui\HomeTab.cpp" />
     <ClCompile Include="Source\Gui\MainWindow.cpp" />
     <ClCompile Include="Source\Gui\SnCurveTab.cpp" />
@@ -143,6 +144,7 @@
     <QtMoc Include="Source\Gui\HomeTab.hpp" />
     <QtMoc Include="Source\Gui\SnCurveTab.hpp" />
     <QtMoc Include="Source\Gui\MainWindow.hpp" />
+    <QtMoc Include="Source\Gui\HistoryTab.hpp" />
     <ClInclude Include="Source\Model.hpp" />
     <QtMoc Include="Source\Model\Project.hpp" />
     <QtMoc Include="Source\Model\SnDetail.hpp" />

@@ -104,6 +104,10 @@ void MainWindow::buildGui() {
     _snCurveTab = new SnCurveTab(_mainStack);
     _mainStack->addWidget(_snCurveTab);
 
+    // history tab
+    _historyTab = new HistoryTab(_mainStack);
+    _mainStack->addWidget(_historyTab);
+
     // connections
     QObject::connect(_homeTab, &HomeTab::editDetailRequestReceived, this, &MainWindow::onEditDetailRequestReceived);
     QObject::connect(_snNavBar, &QListWidget::currentRowChanged, this, &MainWindow::onSnNavBarCurrentRowChanged);
@@ -180,12 +184,17 @@ void MainWindow::onSnNavBarCurrentRowChanged() {
 
     // clear previous
     _snCurveTab->setDetail(nullptr);
+    _historyTab->setDetail(nullptr);
     if (_detail == nullptr) return;
 
     // show new
     if (_snNavBar->currentItem() == _snCurveItem) {
         _mainStack->setCurrentWidget(_snCurveTab);
         _snCurveTab->setDetail(dynamic_cast<SnDetail*>(_detail));
+    }
+    else if (_snNavBar->currentItem() == _historyItem) {
+        _mainStack->setCurrentWidget(_historyTab);
+        _historyTab->setDetail(dynamic_cast<SnDetail*>(_detail));
     }
 
 }
