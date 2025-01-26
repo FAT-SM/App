@@ -206,7 +206,9 @@ void EditTableDialog::setTableData(const Matrix<T>& tableData) {
                 _table->setItem(i, j, item);
             }
 
-            if constexpr (std::is_same_v<T, int> || std::is_same_v<T, double>)
+            if constexpr (std::is_same_v<T, int>)
+                item->setText(QString::number(tableData.at(i, j)));
+            else if constexpr (std::is_same_v<T, double>)
                 item->setText(QString::number(tableData.at(i, j), 'g', 17));
             else if constexpr (std::is_same_v<T, std::string>)
                 item->setText(QString::fromStdString(tableData.at(i, j)));
