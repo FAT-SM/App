@@ -136,13 +136,13 @@ void HistoryTab::buildGui() {
     // chart view A
     _chartViewA = new QChartView(_chartA, _rightWidget);
     _chartViewA->setRenderHint(QPainter::Antialiasing);
-    _chartViewA->setStyleSheet("border: 1px solid #D8D8D8; background: #FFFFFF;");
+    _chartViewA->setStyleSheet("border: 1px solid #D8D8D8");
     _rightWidgetLayout->addWidget(_chartViewA, 0, 0);
 
     // chart view B
     _chartViewB = new QChartView(_chartB, _rightWidget);
     _chartViewB->setRenderHint(QPainter::Antialiasing);
-    _chartViewB->setStyleSheet("border: 1px solid #D8D8D8; background: #FFFFFF;");
+    _chartViewB->setStyleSheet("border: 1px solid #D8D8D8");
     _rightWidgetLayout->addWidget(_chartViewB, 1, 0);
 
     // connections

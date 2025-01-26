@@ -58,8 +58,10 @@ void SnDetail::setSlopes(const Matrix<double>& slopes) {
         if (slopes.at(i + 1, 1) <= slopes.at(i, 1))
             throw std::invalid_argument("Endurance limits must be specified in ascending order.");
     }
-    if (slopes.at(0, 0) < 1) throw std::invalid_argument("Slope parameter must be greater than or equal to 1.");
-    if (slopes.at(0, 1) <= 2e6) throw std::invalid_argument("Endurance limit must be greater than 2 million cycles.");
+    if (slopes.at(0, 0) < 1)
+        throw std::invalid_argument("Slope parameter must be greater than or equal to 1.");
+    if (slopes.at(0, 1) < 2e6)
+        throw std::invalid_argument("Endurance limit must be greater than or equal to 2 million cycles.");
     _slopes = slopes;
     emit modified();
 }

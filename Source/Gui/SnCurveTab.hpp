@@ -3,8 +3,8 @@
 #include <QtCore>
 #include <QtGui>
 #include <QtWidgets>
+#include <QtCharts>
 #include "Model.hpp"
-#include "Gui/Gnuplot.hpp"
 
 /* The S-N curve tab. */
 class SnCurveTab : public QWidget {
@@ -26,11 +26,9 @@ private:
     QGridLayout* _slopesGroupBoxLayout;
     QTableWidget* _slopesTable;
     QPushButton* _editSlopesTableButton;
-    QLabel* _plotArea;
+    QChart* _chart;
+    QChartView* _chartView;
     SnDetail* _detail;
-    Gnuplot* _plotter;
-    QTimer* _plotTimer;
-    bool _outdatedPlot;
 
     /* Builds the GUI. */
     void buildGui();
@@ -45,9 +43,6 @@ public:
 
     /* S-N curve tab constructor. */
     explicit SnCurveTab(QWidget* parent = nullptr);
-
-    /* The event filter. */
-    bool eventFilter(QObject* watched, QEvent* event) override;
 
     /* Sets the current detail. */
     void setDetail(SnDetail* detail);

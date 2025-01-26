@@ -1,6 +1,7 @@
 #include <QtGlobal>
 #include <cmath>
 #include <vector>
+#include <utility>
 #include <stdexcept>
 #include "Core.hpp"
 #include "Gui/EditTableDialog.hpp"
@@ -31,6 +32,7 @@ void SnCurveTab::buildGui() {
 
     // right widget
     _rightWidget = new QWidget(_splitter);
+    _rightWidget->setMinimumSize(400, 400);
     _splitter->addWidget(_rightWidget);
     _splitter->setStretchFactor(1, 1);
 
@@ -91,12 +93,18 @@ void SnCurveTab::buildGui() {
     _editSlopesTableButton->setText("Edit Table");
     _slopesGroupBoxLayout->addWidget(_editSlopesTableButton, 1, 0);
 
-    // plot area
-    _plotArea = new QLabel(_rightWidget);
-    _plotArea->setMinimumSize(400, 400);
-    _plotArea->setStyleSheet("border: 1px solid #D8D8D8; background: #FFFFFF;");
-    _plotArea->installEventFilter(this);
-    _rightWidgetLayout->addWidget(_plotArea, 0, 0);
+    // chart
+    _chart = new QChart();
+    _chart->legend()->hide();
+    _chart->layout()->setContentsMargins(0, 0, 0, 0);
+    _chart->setBackgroundRoundness(0);
+    _chart->setTitle("S-N Curve");
+
+    // chart view
+    _chartView = new QChartView(_chart, _rightWidget);
+    _chartView->setRenderHint(QPainter::Antialiasing);
+    _chartView->setStyleSheet("border: 1px solid #D8D8D8");
+    _rightWidgetLayout->addWidget(_chartView, 0, 0);
 
     // connections
     QObject::connect(_categoryBox, &QLineEdit::editingFinished, this, &SnCurveTab::onCategoryBoxEdited);
@@ -128,100 +136,89 @@ void SnCurveTab::refreshGui() {
 
 void SnCurveTab::refreshPlot() {
 
-    // figure setup
-    _plotter->figure(_plotArea->size());
-    _plotter->append(R"(
-# activate log scale
-set logscale xy 10
-set format xy '10^{%T}'
-
-# grid setup
-set style line 10 lt 1 lw 1 lc rgb 'gray'
-set style line 20 lt 0 lw 1 lc rgb 'gray'
-set grid xtics ytics mxtics mytics ls 10, ls 20
-
-# text setup
-set xtics font ', 8'
-set ytics font ', 8'
-set xlabel 'Endurance [Cycles]' font ', 9'
-set ylabel 'Stress Range [MPa]' font ', 9'
-set title 'S-N Curve' font ', 10'
-unset key
-    )");
-
-    // write plot data
-    if (_detail == nullptr || !_detail->category() || _detail->slopes().rowCount() == 0) {
-        _plotter->append("$snplot << end");
-        _plotter->append("10.0 10.0");
-        _plotter->append("end");
-    } else {
+    // get data
+    auto* series = new QLineSeries(_chart);
+    auto xRange = std::make_pair(1.0, 10.0);
+    auto yRange = std::make_pair(1.0, 10.0);
+    if (_detail != nullptr && _detail->category() && _detail->slopes().rowCount() > 0) {
 
         // compute data points
-        double minX = 1e4;
-        double refX = 2e6;
-        double refY = *_detail->category();
-        std::vector<double> x, y;
-        x.push_back(refX);
-        y.push_back(refY);
+        double xMin = 1e4;
+        double yMin = 1e1;
+        double xRef = 2e6;
+        double yRef = *_detail->category();
+        std::vector<double> xVec, yVec;
+        xVec.push_back(xRef);
+        yVec.push_back(yRef);
         for (int i = 0; i < _detail->slopes().rowCount(); ++i) {
             double m = _detail->slopes().at(i, 0);
             double x2 = _detail->slopes().at(i, 1);
-            double x1 = x.back();
-            double y1 = y.back();
+            double x1 = xVec.back();
+            double y1 = yVec.back();
             double y2 = y1*std::pow(x1/x2, 1.0/m);
-            x.push_back(x2);
-            y.push_back(y2);
+            xVec.push_back(x2);
+            yVec.push_back(y2);
         }
         {
             double m = _detail->slopes().at(0, 0);
-            double x2 = x.front();
-            double y2 = y.front();
-            double x1 = minX;
+            double x2 = xVec.front();
+            double y2 = yVec.front();
+            double x1 = xMin;
             double y1 = y2/std::pow(x1/x2, 1.0/m);
-            x.insert(x.begin(), x1);
-            y.insert(y.begin(), y1);
+            xVec.insert(xVec.begin(), x1);
+            yVec.insert(yVec.begin(), y1);
         }
-        double maxX = std::pow(10, std::ceil(std::log10(x.back())));
-        if (maxX == x.back()) maxX *= 10.0;
-        x.push_back(maxX);
-        y.push_back(y.back());
+        double xMax = std::pow(10, std::ceil(std::log10(xVec.back())));
+        double yMax = std::pow(10, std::ceil(std::log10(yVec.front())));
+        if (xMax == xVec.back()) xMax *= 10.0;
+        xVec.push_back(xMax);
+        yVec.push_back(yVec.back());
 
-        // write data
-        _plotter->append("set autoscale xfix");
-        _plotter->append("$snplot << end");
-        for (int i = 0; i < x.size(); ++i) _plotter->append(QString("%1 %2").arg(x.at(i)).arg(y.at(i)));
-        _plotter->append("end");
+        // add to series
+        for (int i = 0; i < xVec.size(); ++i) series->append(xVec.at(i), yVec.at(i));
+        xRange = std::make_pair(xMin, xMax);
+        yRange = std::make_pair(yMin, yMax);
 
     }
 
-    // plot
-    _plotter->append("set style line 100 lt 1 lw 2 lc rgb '#006CD9'");
-    _plotter->append("plot $snplot with lines ls 100");
-    _plotArea->setPixmap(_plotter->plot());
-    _outdatedPlot = false;
+    // set series
+    _chart->removeAllSeries();
+    _chart->addSeries(series);
+
+    // axes setup
+    while (_chart->axes().count() > 0) {
+        auto* axis = _chart->axes().back();
+        _chart->removeAxis(axis);
+        axis->deleteLater();
+    }
+    auto* xAxis = new QLogValueAxis(_chart);
+    auto* yAxis = new QLogValueAxis(_chart);
+    _chart->addAxis(xAxis, Qt::AlignBottom);
+    _chart->addAxis(yAxis, Qt::AlignLeft);
+    xAxis->setRange(xRange.first, xRange.second);
+    yAxis->setRange(yRange.first, yRange.second);
+    xAxis->setMinorTickCount(8);
+    yAxis->setMinorTickCount(8);
+    xAxis->setLabelFormat("%.0e");
+    yAxis->setLabelFormat("%.0e");
+    xAxis->setTitleText("Endurance [Cycles]");
+    yAxis->setTitleText("Stress Range [MPa]");
+    series->setColor("#006CD9");
+    series->attachAxis(xAxis);
+    series->attachAxis(yAxis);
+
+    // font setup
+    for (auto* axis : { xAxis, yAxis }) {
+        auto font = axis->titleFont();
+        font.setBold(false);
+        axis->setTitleFont(font);
+    }
 
 }
 
 SnCurveTab::SnCurveTab(QWidget* parent) : QWidget(parent) {
-
-    // create plotter
-    _plotter = new Gnuplot(this);
-
-    // create auto refresh timer
-    _plotTimer = new QTimer(this);
-    _plotTimer->setInterval(100);
-    QObject::connect(_plotTimer, &QTimer::timeout, this, [this]() { if (_outdatedPlot) refreshPlot(); });
-    _plotTimer->start();
-
-    // initialize gui
     buildGui();
     refreshGui();
-
-}
-
-bool SnCurveTab::eventFilter(QObject* watched, QEvent* event) {
-    if (watched == _plotArea && event->type() == QEvent::Resize) _outdatedPlot = true;
-    return QWidget::eventFilter(watched, event);
 }
 
 void SnCurveTab::setDetail(SnDetail* detail) {

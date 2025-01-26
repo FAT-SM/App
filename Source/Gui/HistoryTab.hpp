@@ -5,7 +5,6 @@
 #include <QtWidgets>
 #include <QtCharts>
 #include "Model.hpp"
-#include "Gui/Gnuplot.hpp"
 
 /* The stress-time history tab. */
 class HistoryTab : public QWidget {

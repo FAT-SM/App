@@ -36,9 +36,6 @@
     <ClCompile Include="Source\Model\Project.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Gui\Gnuplot.cpp">
-      <Filter>Source\Gui</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Gui\EditTableDialog.cpp">
       <Filter>Source\Gui</Filter>
     </ClCompile>
@@ -112,9 +109,6 @@
     </QtMoc>
     <QtMoc Include="Source\Model\Project.hpp">
       <Filter>Source\Model</Filter>
-    </QtMoc>
-    <QtMoc Include="Source\Gui\Gnuplot.hpp">
-      <Filter>Source\Gui</Filter>
     </QtMoc>
     <QtMoc Include="Source\Gui\EditTableDialog.hpp">
       <Filter>Source\Gui</Filter>

@@ -116,7 +116,6 @@
     <ClCompile Include="Source\Core\Matrix.cpp" />
     <ClCompile Include="Source\Core\Utility.cpp" />
     <ClCompile Include="Source\Gui\EditTableDialog.cpp" />
-    <ClCompile Include="Source\Gui\Gnuplot.cpp" />
     <ClCompile Include="Source\Gui\HistoryTab.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
@@ -152,7 +151,6 @@
     <ClInclude Include="Source\Core\Utility.hpp" />
     <ClInclude Include="Source\Gui.hpp" />
     <ClInclude Include="Source\Test.hpp" />
-    <QtMoc Include="Source\Gui\Gnuplot.hpp" />
     <QtMoc Include="Source\Gui\EditTableDialog.hpp" />
     <QtMoc Include="Source\Gui\HomeTab.hpp" />
     <QtMoc Include="Source\Gui\SnCurveTab.hpp" />
