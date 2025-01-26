@@ -1,5 +1,8 @@
 #include <QtGlobal>
 #include <stdexcept>
+#include <utility>
+#include <limits>
+#include "Core.hpp"
 #include "Gui/EditTableDialog.hpp"
 #include "Gui/HistoryTab.hpp"
 
@@ -28,6 +31,7 @@ void HistoryTab::buildGui() {
 
     // right widget
     _rightWidget = new QWidget(_splitter);
+    _rightWidget->setMinimumSize(400, 400);
     _splitter->addWidget(_rightWidget);
     _splitter->setStretchFactor(1, 1);
 
@@ -115,12 +119,31 @@ void HistoryTab::buildGui() {
     _editSampleTableButton->setText("Edit Table");
     _sampleGroupBoxLayout->addWidget(_editSampleTableButton, 1, 0);
 
-    // plot area
-    _plotArea = new QLabel(_rightWidget);
-    _plotArea->setMinimumSize(400, 400);
-    _plotArea->setStyleSheet("border: 1px solid #D8D8D8; background: #FFFFFF;");
-    _plotArea->installEventFilter(this);
-    _rightWidgetLayout->addWidget(_plotArea, 0, 0);
+    // chart A
+    _chartA = new QChart();
+    _chartA->legend()->hide();
+    _chartA->layout()->setContentsMargins(0, 0, 0, 0);
+    _chartA->setBackgroundRoundness(0);
+    _chartA->setTitle("Stress-Time History Sample");
+
+    // chart B
+    _chartB = new QChart();
+    _chartB->legend()->hide();
+    _chartB->layout()->setContentsMargins(0, 0, 0, 0);
+    _chartB->setBackgroundRoundness(0);
+    _chartB->setTitle("Load Reversals");
+
+    // chart view A
+    _chartViewA = new QChartView(_chartA, _rightWidget);
+    _chartViewA->setRenderHint(QPainter::Antialiasing);
+    _chartViewA->setStyleSheet("border: 1px solid #D8D8D8; background: #FFFFFF;");
+    _rightWidgetLayout->addWidget(_chartViewA, 0, 0);
+
+    // chart view B
+    _chartViewB = new QChartView(_chartB, _rightWidget);
+    _chartViewB->setRenderHint(QPainter::Antialiasing);
+    _chartViewB->setStyleSheet("border: 1px solid #D8D8D8; background: #FFFFFF;");
+    _rightWidgetLayout->addWidget(_chartViewB, 1, 0);
 
     // connections
     QObject::connect(_timeGroupBox, &QGroupBox::toggled, this, &HistoryTab::onTimeGroupBoxToggled);
@@ -181,100 +204,84 @@ void HistoryTab::refreshGui() {
 
 void HistoryTab::refreshPlot() {
 
-    // figure setup
-    _plotter->figure(_plotArea->size());
-    _plotter->append("set multiplot layout 2, 1");
-    if (_detail == nullptr || _detail->ignoreTime()) {
-        _plotter->append(R"(
-# axes setup
-set style line 10 lt 1 lw 1 lc rgb 'gray'
-set grid ytics ls 10
-unset xtics
-set mytics
-
-# labels
-set ytics font ', 8'
-set ylabel 'Stress [MPa]' font ', 9'
-unset key
-        )");
-    } else {
-        _plotter->append(QString(R"(
-# axes setup
-set style line 10 lt 1 lw 1 lc rgb 'gray'
-set grid xtics ytics ls 10
-set mxtics
-set mytics
-
-# labels
-set xtics font ', 8'
-set ytics font ', 8'
-set xlabel 'Time [%1]' font ', 9'
-set ylabel 'Stress [MPa]' font ', 9'
-unset key
-        )").arg(_detail->timeUnits()));
-    }
-
-    // write plot data
-    if (_detail == nullptr || _detail->historySample().rowCount() == 0 || _detail->historyExtrema().size() == 0) {
-        _plotter->append("$history << end\n0.0 0.0\nend");
-        _plotter->append("$extrema << end\n0.0 0.0\nend");
-    } else {
+    // get data
+    auto* seriesA = new QLineSeries(_chartA);
+    auto* seriesB = new QLineSeries(_chartB);
+    auto xRange = std::make_pair(0.0, 1.0);
+    auto yRange = std::make_pair(0.0, 1.0);
+    if (_detail != nullptr && _detail->historySample().rowCount() > 0 && _detail->historyExtrema().size() > 0) {
 
         // history
-        _plotter->append("$history << end");
-        for (int i = 0; i < _detail->historySample().rowCount(); ++i) _plotter->append(
-            QString("%1 %2").arg(_detail->historySample().at(i, 0)).arg(_detail->historySample().at(i, 1)));
-        _plotter->append("end");
+        xRange = std::make_pair(+std::numeric_limits<double>::infinity(), -std::numeric_limits<double>::infinity());
+        yRange = std::make_pair(+std::numeric_limits<double>::infinity(), -std::numeric_limits<double>::infinity());
+        for (int i = 0; i < _detail->historySample().rowCount(); ++i) {
+            double x = _detail->historySample().at(i, 0);
+            double y = _detail->historySample().at(i, 1);
+            seriesA->append(x, y);
+            if (x < xRange.first) xRange.first = x;
+            if (y < yRange.first) yRange.first = y;
+            if (x > xRange.second) xRange.second = x;
+            if (y > yRange.second) yRange.second = y;
+        }
+        xRange = Utility::getHumanReadableRange(xRange);
+        yRange = Utility::getHumanReadableRange(yRange);
 
         // extrema
-        _plotter->append("$extrema << end");
         for (int i = 0; i < _detail->historyExtrema().size(); ++i) {
             double x = _detail->historySample().at(_detail->historyExtrema().at(i), 0);
             double y = _detail->historySample().at(_detail->historyExtrema().at(i), 1);
-            _plotter->append(QString("%1 %2").arg(x).arg(y));
+            seriesB->append(x, y);
         }
-        _plotter->append("end");
 
     }
 
-    // plot
-    _plotter->append(R"(
-# line style
-set style line 100 lt 1 lw 2 lc rgb '#006CD9'
+    // set series and use OpenGL on large series
+    _chartA->removeAllSeries();
+    _chartB->removeAllSeries();
+    _chartA->addSeries(seriesA);
+    _chartB->addSeries(seriesB);
+    if (seriesA->count() > 10'000) seriesA->setUseOpenGL(true);
+    if (seriesB->count() > 10'000) seriesB->setUseOpenGL(true);
 
-# plot A
-set title 'Stress-Time History Sample' font ', 10'
-plot $history with lines ls 100
+    // axes setup
+    _chartA->createDefaultAxes();
+    _chartB->createDefaultAxes();
+    auto* xAxisA = qobject_cast<QValueAxis*>(_chartA->axes(Qt::Horizontal).first());
+    auto* xAxisB = qobject_cast<QValueAxis*>(_chartB->axes(Qt::Horizontal).first());
+    auto* yAxisA = qobject_cast<QValueAxis*>(_chartA->axes(Qt::Vertical).first());
+    auto* yAxisB = qobject_cast<QValueAxis*>(_chartB->axes(Qt::Vertical).first());
+    xAxisA->setRange(xRange.first, xRange.second);
+    xAxisB->setRange(xRange.first, xRange.second);
+    yAxisA->setRange(yRange.first, yRange.second);
+    yAxisB->setRange(yRange.first, yRange.second);
+    xAxisA->setMinorTickCount(4);
+    xAxisB->setMinorTickCount(4);
+    yAxisA->setMinorTickCount(4);
+    yAxisB->setMinorTickCount(4);
+    yAxisA->setTitleText("Stress [MPa]");
+    yAxisB->setTitleText("Stress [MPa]");
+    if (_detail == nullptr || _detail->ignoreTime()) {
+        xAxisA->setVisible(false);
+        xAxisB->setVisible(false);
+    } else {
+        xAxisA->setTitleText(QString("Time [%1]").arg(_detail->timeUnits()));
+        xAxisB->setTitleText(QString("Time [%1]").arg(_detail->timeUnits()));
+    }
+    seriesA->setColor("#006CD9");
+    seriesB->setColor("#006CD9");
 
-# plot B
-set title 'Load Reversals' font ', 10'
-plot $extrema with lines ls 100
-    )");
-    _plotArea->setPixmap(_plotter->plot());
-    _outdatedPlot = false;
+    // font setup
+    for (auto* axis : { xAxisA, xAxisB, yAxisA, yAxisB }) {
+        auto font = axis->titleFont();
+        font.setBold(false);
+        axis->setTitleFont(font);
+    }
 
 }
 
 HistoryTab::HistoryTab(QWidget* parent) : QWidget(parent) {
-
-    // create plotter
-    _plotter = new Gnuplot(this);
-
-    // create auto refresh timer
-    _plotTimer = new QTimer(this);
-    _plotTimer->setInterval(100);
-    QObject::connect(_plotTimer, &QTimer::timeout, this, [this]() { if (_outdatedPlot) refreshPlot(); });
-    _plotTimer->start();
-
-    // initialize gui
     buildGui();
     refreshGui();
-
-}
-
-bool HistoryTab::eventFilter(QObject* watched, QEvent* event) {
-    if (watched == _plotArea && event->type() == QEvent::Resize) _outdatedPlot = true;
-    return QWidget::eventFilter(watched, event);
 }
 
 void HistoryTab::setDetail(SnDetail* detail) {

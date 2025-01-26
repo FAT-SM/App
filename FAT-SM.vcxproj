@@ -37,12 +37,12 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.8.1_msvc2022_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;charts</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.8.1_msvc2022_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;charts</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
   </PropertyGroup>
@@ -114,16 +114,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Matrix.cpp" />
+    <ClCompile Include="Source\Core\Utility.cpp" />
     <ClCompile Include="Source\Gui\EditTableDialog.cpp" />
     <ClCompile Include="Source\Gui\Gnuplot.cpp" />
-    <ClCompile Include="Source\Gui\HistoryTab.cpp" />
+    <ClCompile Include="Source\Gui\HistoryTab.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="Source\Gui\HomeTab.cpp" />
     <ClCompile Include="Source\Gui\MainWindow.cpp" />
     <ClCompile Include="Source\Gui\SnCurveTab.cpp" />
     <ClCompile Include="Source\Model\Detail.cpp" />
     <ClCompile Include="Source\Model\Project.cpp" />
     <ClCompile Include="Source\Model\SnDetail.cpp" />
-    <ClCompile Include="Source\_main_.cpp" />
+    <ClCompile Include="Source\_main_.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes" />
@@ -138,7 +149,9 @@
   <ItemGroup>
     <ClInclude Include="Source\Core.hpp" />
     <ClInclude Include="Source\Core\Matrix.hpp" />
+    <ClInclude Include="Source\Core\Utility.hpp" />
     <ClInclude Include="Source\Gui.hpp" />
+    <ClInclude Include="Source\Test.hpp" />
     <QtMoc Include="Source\Gui\Gnuplot.hpp" />
     <QtMoc Include="Source\Gui\EditTableDialog.hpp" />
     <QtMoc Include="Source\Gui\HomeTab.hpp" />

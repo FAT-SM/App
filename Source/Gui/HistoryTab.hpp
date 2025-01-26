@@ -3,6 +3,7 @@
 #include <QtCore>
 #include <QtGui>
 #include <QtWidgets>
+#include <QtCharts>
 #include "Model.hpp"
 #include "Gui/Gnuplot.hpp"
 
@@ -31,11 +32,11 @@ private:
     QGridLayout* _sampleGroupBoxLayout;
     QTableWidget* _sampleTable;
     QPushButton* _editSampleTableButton;
-    QLabel* _plotArea;
+    QChart* _chartA;
+    QChart* _chartB;
+    QChartView* _chartViewA;
+    QChartView* _chartViewB;
     SnDetail* _detail;
-    Gnuplot* _plotter;
-    QTimer* _plotTimer;
-    bool _outdatedPlot;
 
     /* Builds the GUI. */
     void buildGui();
@@ -50,9 +51,6 @@ public:
 
     /* Stress-time history tab constructor. */
     explicit HistoryTab(QWidget* parent = nullptr);
-
-    /* The event filter. */
-    bool eventFilter(QObject* watched, QEvent* event) override;
 
     /* Sets the current detail. */
     void setDetail(SnDetail* detail);
