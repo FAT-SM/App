@@ -124,6 +124,7 @@
     </ClCompile>
     <ClCompile Include="Source\Gui\HomeTab.cpp" />
     <ClCompile Include="Source\Gui\MainWindow.cpp" />
+    <ClCompile Include="Source\Gui\RainflowTab.cpp" />
     <ClCompile Include="Source\Gui\SnCurveTab.cpp" />
     <ClCompile Include="Source\Model\Detail.cpp" />
     <ClCompile Include="Source\Model\Project.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Source\Core\Matrix.hpp" />
     <ClInclude Include="Source\Core\Utility.hpp" />
     <ClInclude Include="Source\Gui.hpp" />
+    <ClInclude Include="Source\Gui\RainflowTab.hpp" />
     <ClInclude Include="Source\Test.hpp" />
     <QtMoc Include="Source\Gui\EditTableDialog.hpp" />
     <QtMoc Include="Source\Gui\HomeTab.hpp" />

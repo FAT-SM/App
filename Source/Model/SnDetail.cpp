@@ -1,35 +1,29 @@
 #include <stdexcept>
 #include "Model/SnDetail.hpp"
 
-void SnDetail::findExtrema() {
+std::vector<int> SnDetail::findExtrema(const Matrix<double>& history) {
 
-    // clear previous and check if the stress-time history is available
-    _extrema.clear(); _extrema.shrink_to_fit();
-    if (_history.rowCount() < 3 || _history.columnCount() != 2) return;
-
-    // consider the first point as a local extremum
-    _extrema.push_back(0);
+    // initialize storage and consider the first point as a local extremum
+    std::vector<int> extrema;
+    extrema.push_back(0);
 
     // loop history points except first and last points (first and last points are always extrema)
-    for (int i = 1; i < _history.rowCount() - 1; ++i) {
+    for (int i = 1; i < history.rowCount() - 1; ++i) {
 
         // check if the current point is a local extremum
         if (
-            (_history.at(i, 1) < _history.at(_extrema.back(), 1) && _history.at(i, 1) < _history.at(i + 1, 1)) ||
-            (_history.at(i, 1) > _history.at(_extrema.back(), 1) && _history.at(i, 1) > _history.at(i + 1, 1))
-        ) { _extrema.push_back(i); }
+            (history.at(i, 1) < history.at(extrema.back(), 1) && history.at(i, 1) < history.at(i + 1, 1)) ||
+            (history.at(i, 1) > history.at(extrema.back(), 1) && history.at(i, 1) > history.at(i + 1, 1))
+        ) { extrema.push_back(i); }
 
     }
 
     // consider the last point as a local extremum
-    _extrema.push_back(_history.rowCount() - 1);
+    extrema.push_back(history.rowCount() - 1);
 
     // check if valid
-    if (_extrema.size() <= 2) {
-        _history = Matrix<double>();
-        _extrema.clear(); _extrema.shrink_to_fit();
-        throw std::runtime_error("Stress-time history does not have any load reversals.");
-    }
+    if (extrema.size() <= 2) throw std::runtime_error("Stress-time history does not have any load reversals.");
+    else return extrema;
 
 }
 
@@ -101,8 +95,8 @@ void SnDetail::setHistorySample(const Matrix<double>& history) {
     for (int i = 0; i < history.rowCount() - 1; ++i)
         if (history.at(i + 1, 0) <= history.at(i, 0))
             throw std::invalid_argument("Stress-time history must be specified in time-ascending order.");
+    _extrema = findExtrema(history);
     _history = history;
-    findExtrema(); // may throw, in which case "_history" is cleared
     emit modified();
 }
 

@@ -43,4 +43,10 @@ public:
     /* The number of columns. */
     int columnCount() const;
 
+    /* Copies the i-th row. */
+    Matrix getRow(int i) const;
+
+    /* Copies the j-th column. */
+    Matrix getColumn(int j) const;
+
 };

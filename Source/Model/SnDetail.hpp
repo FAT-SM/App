@@ -20,7 +20,7 @@ private:
     std::vector<int> _extrema;
 
     /* Finds the local extrema (minima and maxima) of the stress-time history (finds the load reversals). */
-    void findExtrema();
+    static std::vector<int> findExtrema(const Matrix<double>& history);
 
 public:
 

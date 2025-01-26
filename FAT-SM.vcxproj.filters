@@ -57,6 +57,9 @@
     <ClCompile Include="Source\Core\Utility.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Gui\RainflowTab.cpp">
+      <Filter>Source\Gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -98,6 +101,9 @@
     </ClInclude>
     <ClInclude Include="Source\Core\Utility.hpp">
       <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Gui\RainflowTab.hpp">
+      <Filter>Source\Gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

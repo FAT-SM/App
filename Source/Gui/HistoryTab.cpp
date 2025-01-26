@@ -354,13 +354,14 @@ void HistoryTab::onEditSampleTableButtonClicked() {
     if (_detail->ignoreTime()) {
         dialog.setColumnCount(1);
         dialog.setColumnLabels({ "Stress\n[MPa]" });
+        if (_detail->historySample().rowCount() > 0) dialog.setTableData(_detail->historySample().getColumn(1));
     } else {
         dialog.setColumnCount(2);
         dialog.setColumnLabels({ QString("Time\n[%1]").arg(_detail->timeUnits()), "Stress\n[MPa]" });
+        if (_detail->historySample().rowCount() > 0) dialog.setTableData(_detail->historySample());
     }
     dialog.setStretchColumns(true);
     dialog.setFixedColumnCount(true);
-    dialog.setTableData(_detail->historySample());
     dialog.resize(350, 300);
     dialog.exec();
 }
