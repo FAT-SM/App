@@ -368,7 +368,7 @@ void RainflowTab::refreshPlotC() {
         auto* dataArray = new QBarDataArray();
         for (int i = 0; i < nBinsX; ++i) {
             auto* dataRow = new QBarDataRow();
-            for (int j = 0; j < nBinsY; ++j) {
+            for (int j = nBinsY - 1; j >= 0; --j) {
                 double count = counts.at(i, j);
                 dataRow->append(QBarDataItem(count));
                 if (count > maxCount) maxCount = count;
