@@ -18,9 +18,14 @@ private:
     double _repCount;
     Matrix<double> _history;
     std::vector<int> _extrema;
+    Matrix<double> _rainflow;
 
     /* Finds the local extrema (minima and maxima) of the stress-time history (finds the load reversals). */
     static std::vector<int> findExtrema(const Matrix<double>& history);
+
+    /* Performs the rainflow counting algorithm. */
+    static Matrix<double> executeRainflowCounting(const Matrix<double>& history, const std::vector<int>& extrema,
+        double repCount);
 
 public:
 
@@ -68,5 +73,11 @@ public:
 
     /* The local extrema (minima and maxima) of the stress-time history (the load reversals). */
     const std::vector<int>& historyExtrema() const;
+
+    /* The results of the rainflow counting algorithm. */
+    const Matrix<double>& rainflowCounts() const;
+
+    /* Performs the rainflow counting algorithm. */
+    void executeRainflowCounting();
 
 };

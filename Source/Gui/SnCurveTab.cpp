@@ -127,8 +127,8 @@ void SnCurveTab::refreshGui() {
         _categoryBox->setText(_detail->category() ? QString::number(*_detail->category()) : "");
         _slopesTable->setRowCount(_detail->slopes().rowCount());
         for (int i = 0; i < _detail->slopes().rowCount(); ++i) {
-            _slopesTable->setItem(i, 0, new QTableWidgetItem(QString::asprintf("%.5g", _detail->slopes().at(i, 0))));
-            _slopesTable->setItem(i, 1, new QTableWidgetItem(QString::asprintf("%.5g", _detail->slopes().at(i, 1))));
+            _slopesTable->setItem(i, 0, new QTableWidgetItem(QString::number(_detail->slopes().at(i, 0), 'g', 5)));
+            _slopesTable->setItem(i, 1, new QTableWidgetItem(QString::number(_detail->slopes().at(i, 1), 'g', 5)));
         }
     }
     refreshPlot();

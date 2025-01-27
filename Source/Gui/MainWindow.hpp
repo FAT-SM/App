@@ -7,6 +7,7 @@
 #include "Gui/HomeTab.hpp"
 #include "Gui/SnCurveTab.hpp"
 #include "Gui/HistoryTab.hpp"
+#include "Gui/RainflowTab.hpp"
 
 /* The main window of the application. */
 class MainWindow : public QMainWindow {
@@ -36,6 +37,7 @@ private:
     HomeTab* _homeTab;
     SnCurveTab* _snCurveTab;
     HistoryTab* _historyTab;
+    RainflowTab* _rainflowTab;
     Module _module;
     Project* _project;
     Detail* _detail;

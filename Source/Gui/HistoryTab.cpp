@@ -123,6 +123,7 @@ void HistoryTab::buildGui() {
     _chartA = new QChart();
     _chartA->legend()->hide();
     _chartA->layout()->setContentsMargins(0, 0, 0, 0);
+    _chartA->setContentsMargins(-10, -10, 0, -10);
     _chartA->setBackgroundRoundness(0);
     _chartA->setTitle("Stress-Time History Sample");
 
@@ -130,18 +131,21 @@ void HistoryTab::buildGui() {
     _chartB = new QChart();
     _chartB->legend()->hide();
     _chartB->layout()->setContentsMargins(0, 0, 0, 0);
+    _chartB->setContentsMargins(-10, -10, 0, -10);
     _chartB->setBackgroundRoundness(0);
     _chartB->setTitle("Load Reversals");
 
     // chart view A
     _chartViewA = new QChartView(_chartA, _rightWidget);
     _chartViewA->setRenderHint(QPainter::Antialiasing);
+    _chartViewA->setRubberBand(QChartView::RectangleRubberBand);
     _chartViewA->setStyleSheet("border: 1px solid #D8D8D8");
     _rightWidgetLayout->addWidget(_chartViewA, 0, 0);
 
     // chart view B
     _chartViewB = new QChartView(_chartB, _rightWidget);
     _chartViewB->setRenderHint(QPainter::Antialiasing);
+    _chartViewB->setRubberBand(QChartView::RectangleRubberBand);
     _chartViewB->setStyleSheet("border: 1px solid #D8D8D8");
     _rightWidgetLayout->addWidget(_chartViewB, 1, 0);
 
@@ -182,7 +186,7 @@ void HistoryTab::refreshGui() {
             _sampleTable->setRowCount(_detail->historySample().rowCount());
             for (int i = 0; i < _detail->historySample().rowCount(); ++i) {
                 _sampleTable->setItem(i, 0, new QTableWidgetItem(
-                    QString::asprintf("%.5g", _detail->historySample().at(i, 1))));
+                    QString::number(_detail->historySample().at(i, 1), 'g', 5)));
             }
         } else {
             _sampleTable->setColumnCount(2);
@@ -193,9 +197,9 @@ void HistoryTab::refreshGui() {
             _sampleTable->setRowCount(_detail->historySample().rowCount());
             for (int i = 0; i < _detail->historySample().rowCount(); ++i) {
                 _sampleTable->setItem(i, 0, new QTableWidgetItem(
-                    QString::asprintf("%.5g", _detail->historySample().at(i, 0))));
+                    QString::number(_detail->historySample().at(i, 0), 'g', 5)));
                 _sampleTable->setItem(i, 1, new QTableWidgetItem(
-                    QString::asprintf("%.5g", _detail->historySample().at(i, 1))));
+                    QString::number(_detail->historySample().at(i, 1), 'g', 5)));
             }
         }
     }

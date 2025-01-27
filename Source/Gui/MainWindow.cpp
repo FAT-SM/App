@@ -5,7 +5,7 @@ void MainWindow::buildGui() {
 
     // this
     setWindowTitle("Fatigue Assessment Tool for Structural Monitoring");
-    resize(1200, 600);
+    resize(0, 720);
 
     // status bar
     _statusBar = new QStatusBar(this);
@@ -41,6 +41,7 @@ void MainWindow::buildGui() {
     _mainNavBar->setSelectionMode(QListWidget::SingleSelection);
     _mainNavBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
     _mainNavBar->setSizeAdjustPolicy(QListWidget::AdjustToContents);
+    _mainNavBar->setMinimumWidth(180);
     _mainNavBar->setStyleSheet([]() {
         QFile styleSheet(":/StyleSheets/NavBar.qss");
         styleSheet.open(QFile::ReadOnly);
@@ -72,6 +73,7 @@ void MainWindow::buildGui() {
     _snNavBar->setSelectionMode(QListWidget::SingleSelection);
     _snNavBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     _snNavBar->setSizeAdjustPolicy(QListWidget::AdjustToContents);
+    _snNavBar->setMinimumWidth(_mainNavBar->minimumWidth());
     _snNavBar->setStyleSheet(_mainNavBar->styleSheet());
     _sideStack->addWidget(_snNavBar);
 
@@ -107,6 +109,10 @@ void MainWindow::buildGui() {
     // history tab
     _historyTab = new HistoryTab(_mainStack);
     _mainStack->addWidget(_historyTab);
+
+    // rainflow tab
+    _rainflowTab = new RainflowTab(_mainStack);
+    _mainStack->addWidget(_rainflowTab);
 
     // connections
     QObject::connect(_homeTab, &HomeTab::editDetailRequestReceived, this, &MainWindow::onEditDetailRequestReceived);
@@ -185,6 +191,7 @@ void MainWindow::onSnNavBarCurrentRowChanged() {
     // clear previous
     _snCurveTab->setDetail(nullptr);
     _historyTab->setDetail(nullptr);
+    _rainflowTab->setDetail(nullptr);
     if (_detail == nullptr) return;
 
     // show new
@@ -195,6 +202,10 @@ void MainWindow::onSnNavBarCurrentRowChanged() {
     else if (_snNavBar->currentItem() == _historyItem) {
         _mainStack->setCurrentWidget(_historyTab);
         _historyTab->setDetail(dynamic_cast<SnDetail*>(_detail));
+    }
+    else if (_snNavBar->currentItem() == _rainflowItem) {
+        _mainStack->setCurrentWidget(_rainflowTab);
+        _rainflowTab->setDetail(dynamic_cast<SnDetail*>(_detail));
     }
 
 }

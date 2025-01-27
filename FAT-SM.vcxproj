@@ -37,12 +37,12 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.8.1_msvc2022_64</QtInstall>
-    <QtModules>core;gui;widgets;charts</QtModules>
+    <QtModules>core;gui;widgets;charts;datavisualization</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.8.1_msvc2022_64</QtInstall>
-    <QtModules>core;gui;widgets;charts</QtModules>
+    <QtModules>core;gui;widgets;charts;datavisualization</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
   </PropertyGroup>
@@ -151,8 +151,7 @@
     <ClInclude Include="Source\Core\Matrix.hpp" />
     <ClInclude Include="Source\Core\Utility.hpp" />
     <ClInclude Include="Source\Gui.hpp" />
-    <ClInclude Include="Source\Gui\RainflowTab.hpp" />
-    <ClInclude Include="Source\Test.hpp" />
+    <QtMoc Include="Source\Gui\RainflowTab.hpp" />
     <QtMoc Include="Source\Gui\EditTableDialog.hpp" />
     <QtMoc Include="Source\Gui\HomeTab.hpp" />
     <QtMoc Include="Source\Gui\SnCurveTab.hpp" />
