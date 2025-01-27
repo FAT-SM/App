@@ -116,6 +116,7 @@ void HistoryTab::buildGui() {
 
     // edit sample table button
     _editSampleTableButton = new QPushButton(_sampleGroupBox);
+    _editSampleTableButton->setIcon(QIcon(":/Graphics/Edit.svg"));
     _editSampleTableButton->setText("Edit Table");
     _sampleGroupBoxLayout->addWidget(_editSampleTableButton, 1, 0);
 

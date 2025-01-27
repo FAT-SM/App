@@ -7,5 +7,7 @@
         <file>Graphics/Info.svg</file>
         <file>Graphics/PasteTable.svg</file>
         <file>Graphics/ClearTable.svg</file>
+        <file>Graphics/Calculator.svg</file>
+        <file>Graphics/Edit.svg</file>
     </qresource>
 </RCC>

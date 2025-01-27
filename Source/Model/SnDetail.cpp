@@ -92,7 +92,7 @@ Matrix<double> SnDetail::executeRainflowCounting(const Matrix<double>& history, 
     }
 
     // finalize
-    Matrix<double> results(counts.size(), 5);
+    Matrix<double> results(static_cast<int>(counts.size()), 5);
     for (int i = 0; i < counts.size(); ++i) {
         results.at(i, 0) = std::get<0>(counts[i]);
         results.at(i, 1) = std::get<1>(counts[i]);

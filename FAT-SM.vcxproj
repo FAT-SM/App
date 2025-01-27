@@ -139,6 +139,8 @@
   <ItemGroup>
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
+    <None Include="Resource\Graphics\Calculator.svg" />
+    <None Include="Resource\Graphics\Edit.svg" />
     <None Include="Resource\Graphics\Home.svg" />
     <None Include="Resource\Graphics\Info.svg" />
     <None Include="Resource\Graphics\ClearTable.svg" />

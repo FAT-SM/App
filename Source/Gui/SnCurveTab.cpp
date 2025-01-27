@@ -90,6 +90,7 @@ void SnCurveTab::buildGui() {
 
     // edit slopes table button
     _editSlopesTableButton = new QPushButton(_slopesGroupBox);
+    _editSlopesTableButton->setIcon(QIcon(":/Graphics/Edit.svg"));
     _editSlopesTableButton->setText("Edit Table");
     _slopesGroupBoxLayout->addWidget(_editSlopesTableButton, 1, 0);
 

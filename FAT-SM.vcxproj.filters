@@ -82,6 +82,12 @@
     <None Include="Resource\Graphics\ClearTable.svg">
       <Filter>Resource\Graphics</Filter>
     </None>
+    <None Include="Resource\Graphics\Calculator.svg">
+      <Filter>Resource\Graphics</Filter>
+    </None>
+    <None Include="Resource\Graphics\Edit.svg">
+      <Filter>Resource\Graphics</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Matrix.hpp">

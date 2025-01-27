@@ -51,6 +51,7 @@ void RainflowTab::buildGui() {
 
     // compute button
     _computeButton = new QPushButton(_rainflowGroupBox);
+    _computeButton->setIcon(QIcon(":/Graphics/Calculator.svg"));
     _computeButton->setText("Calculate");
     _rainflowGroupBoxLayout->addWidget(_computeButton, 0, 0);
 
