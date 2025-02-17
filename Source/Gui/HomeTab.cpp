@@ -65,11 +65,11 @@ void HomeTab::buildGui() {
     _detailsGroupBoxLayout->addWidget(_addSnDetailButton, 1, 1);
 
     // add lefm detail button
-    _newLefmDetailButton = new QPushButton(_detailsGroupBox);
-    _newLefmDetailButton->setIcon(QIcon(":/Graphics/Add.svg"));
-    _newLefmDetailButton->setText("Add LEFM");
-    _newLefmDetailButton->setFixedWidth(100);
-    _detailsGroupBoxLayout->addWidget(_newLefmDetailButton, 1, 2);
+    _addLefmDetailButton = new QPushButton(_detailsGroupBox);
+    _addLefmDetailButton->setIcon(QIcon(":/Graphics/Add.svg"));
+    _addLefmDetailButton->setText("Add LEFM");
+    _addLefmDetailButton->setFixedWidth(100);
+    _detailsGroupBoxLayout->addWidget(_addLefmDetailButton, 1, 2);
 
     // edit detail button
     _editDetailButton = new QPushButton(_detailsGroupBox);
@@ -103,7 +103,7 @@ void HomeTab::refreshGui() {
         _projectNameBox->setEnabled(false);
         _projectDescriptionBox->setEnabled(false);
         _addSnDetailButton->setEnabled(false);
-        _newLefmDetailButton->setEnabled(false);
+        _addLefmDetailButton->setEnabled(false);
         _editDetailButton->setEnabled(false);
         _removeDetailButton->setEnabled(false);
         _projectNameBox->clear();
@@ -112,7 +112,7 @@ void HomeTab::refreshGui() {
         _projectNameBox->setEnabled(true);
         _projectDescriptionBox->setEnabled(true);
         _addSnDetailButton->setEnabled(true);
-        _newLefmDetailButton->setEnabled(true);
+        _addLefmDetailButton->setEnabled(true);
         _editDetailButton->setEnabled(_detailsTable->currentRow() >= 0);
         _removeDetailButton->setEnabled(_detailsTable->currentRow() >= 0);
         _projectNameBox->setText(_project->name());

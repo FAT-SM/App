@@ -21,7 +21,7 @@ private:
     QGridLayout* _detailsGroupBoxLayout;
     QTableWidget* _detailsTable;
     QPushButton* _addSnDetailButton;
-    QPushButton* _newLefmDetailButton;
+    QPushButton* _addLefmDetailButton;
     QPushButton* _editDetailButton;
     QPushButton* _removeDetailButton;
     Project* _project;
