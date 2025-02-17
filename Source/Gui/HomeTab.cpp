@@ -80,7 +80,7 @@ void HomeTab::buildGui() {
 
     // delete detail button
     _deleteDetailButton = new QPushButton(_detailsGroupBox);
-    _deleteDetailButton->setIcon(QIcon(":/Graphics/Delete.svg"));
+    _deleteDetailButton->setIcon(QIcon(":/Graphics/Remove.svg"));
     _deleteDetailButton->setText("Delete");
     _deleteDetailButton->setFixedWidth(100);
     _detailsGroupBoxLayout->addWidget(_deleteDetailButton, 1, 4);

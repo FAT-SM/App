@@ -143,7 +143,7 @@
     <None Include="Resource\Graphics\Add.svg" />
     <None Include="Resource\Graphics\Calculator.svg" />
     <None Include="Resource\Graphics\Cancel.svg" />
-    <None Include="Resource\Graphics\Delete.svg" />
+    <None Include="Resource\Graphics\Remove.svg" />
     <None Include="Resource\Graphics\Edit.svg" />
     <None Include="Resource\Graphics\Home.svg" />
     <None Include="Resource\Graphics\Info.svg" />

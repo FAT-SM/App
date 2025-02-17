@@ -12,6 +12,6 @@
         <file>Graphics/Cancel.svg</file>
         <file>Graphics/Add.svg</file>
         <file>Graphics/Edit.svg</file>
-        <file>Graphics/Delete.svg</file>
+        <file>Graphics/Remove.svg</file>
     </qresource>
 </RCC>
