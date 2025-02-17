@@ -19,7 +19,7 @@ void RainflowTab::buildGui() {
 
     // left widget
     _leftWidget = new QWidget(_splitter);
-    _leftWidget->setMinimumSize(380, 0);
+    _leftWidget->setMinimumSize(440, 0);
     _splitter->addWidget(_leftWidget);
     _splitter->setStretchFactor(0, 0);
 
@@ -82,12 +82,14 @@ void RainflowTab::buildGui() {
     // chart view A
     _chartViewA = new QChartView(_chartA, _rightWidget);
     _chartViewA->setRenderHint(QPainter::Antialiasing);
+    _chartViewA->setRubberBand(QChartView::RubberBand::VerticalRubberBand);
     _chartViewA->setStyleSheet("border: 1px solid #D8D8D8");
     _rightWidgetLayout->addWidget(_chartViewA, 0, 0);
 
     // chart view B
     _chartViewB = new QChartView(_chartB, _rightWidget);
     _chartViewB->setRenderHint(QPainter::Antialiasing);
+    _chartViewB->setRubberBand(QChartView::RubberBand::VerticalRubberBand);
     _chartViewB->setStyleSheet("border: 1px solid #D8D8D8");
     _rightWidgetLayout->addWidget(_chartViewB, 0, 1);
 
@@ -98,11 +100,13 @@ void RainflowTab::buildGui() {
     title->setAlignment(Qt::AlignCenter);
     title->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     title->setStyleSheet("border: none; background: #FFFFFF;");
+    auto* innerWidget = QWidget::createWindowContainer(_chartC, _chartViewC);
+    innerWidget->setStyleSheet("border: none; background: #FFFFFF;");
     _chartViewC->setLayout(new QVBoxLayout(_chartViewC));
     _chartViewC->layout()->setContentsMargins(2, 10, 2, 2);
     _chartViewC->layout()->setSpacing(5);
     _chartViewC->layout()->addWidget(title);
-    _chartViewC->layout()->addWidget(QWidget::createWindowContainer(_chartC, _chartViewC));
+    _chartViewC->layout()->addWidget(innerWidget);
     _chartViewC->setStyleSheet("border: 1px solid #D8D8D8; background: #FFFFFF;");
     _rightWidgetLayout->addWidget(_chartViewC, 1, 0, 1, 2);
     _rightWidgetLayout->setRowStretch(0, 1);

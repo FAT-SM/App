@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+    <defs>
+        <style>
+            .cls-1 { fill: #1F801F; }
+        </style>
+    </defs>
+    <path class="cls-1" d="M14,7V8H8v6H7V8H1V7H7V1H8V7Z" />
+</svg>

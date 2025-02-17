@@ -85,16 +85,18 @@ void EditTableDialog::buildGui() {
 
     // ok button
     _okButton = new QPushButton(_centralWidget);
+    _okButton->setIcon(QIcon(":/Graphics/Ok.svg"));
     _okButton->setText("OK");
-    _okButton->setFixedWidth(80);
+    _okButton->setFixedWidth(100);
     _okButton->setDefault(false);
     _okButton->setAutoDefault(false);
     _centralWidgetLayout->addWidget(_okButton, 1, 1);
 
     // cancel button
     _cancelButton = new QPushButton(_centralWidget);
+    _cancelButton->setIcon(QIcon(":/Graphics/Cancel.svg"));
     _cancelButton->setText("Cancel");
-    _cancelButton->setFixedWidth(80);
+    _cancelButton->setFixedWidth(100);
     _cancelButton->setDefault(false);
     _cancelButton->setAutoDefault(false);
     _centralWidgetLayout->addWidget(_cancelButton, 1, 3);

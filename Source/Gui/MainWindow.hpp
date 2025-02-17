@@ -8,6 +8,7 @@
 #include "Gui/SnCurveTab.hpp"
 #include "Gui/HistoryTab.hpp"
 #include "Gui/RainflowTab.hpp"
+#include "Gui/DamageTab.hpp"
 
 /* The main window of the application. */
 class MainWindow : public QMainWindow {
@@ -33,11 +34,13 @@ private:
     QListWidgetItem* _snCurveItem;
     QListWidgetItem* _historyItem;
     QListWidgetItem* _rainflowItem;
+    QListWidgetItem* _damageItem;
     QStackedWidget* _mainStack;
     HomeTab* _homeTab;
     SnCurveTab* _snCurveTab;
     HistoryTab* _historyTab;
     RainflowTab* _rainflowTab;
+    DamageTab* _damageTab;
     Module _module;
     Project* _project;
     Detail* _detail;

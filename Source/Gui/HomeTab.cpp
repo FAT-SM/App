@@ -59,26 +59,30 @@ void HomeTab::buildGui() {
 
     // new s-n detail button
     _newSnDetailButton = new QPushButton(_detailsGroupBox);
+    _newSnDetailButton->setIcon(QIcon(":/Graphics/Add.svg"));
     _newSnDetailButton->setText("New (S-N)");
-    _newSnDetailButton->setFixedWidth(80);
+    _newSnDetailButton->setFixedWidth(100);
     _detailsGroupBoxLayout->addWidget(_newSnDetailButton, 1, 1);
 
     // new lefm detail button
     _newLefmDetailButton = new QPushButton(_detailsGroupBox);
+    _newLefmDetailButton->setIcon(QIcon(":/Graphics/Add.svg"));
     _newLefmDetailButton->setText("New (LEFM)");
-    _newLefmDetailButton->setFixedWidth(80);
+    _newLefmDetailButton->setFixedWidth(100);
     _detailsGroupBoxLayout->addWidget(_newLefmDetailButton, 1, 2);
 
     // edit detail button
     _editDetailButton = new QPushButton(_detailsGroupBox);
+    _editDetailButton->setIcon(QIcon(":/Graphics/Edit.svg"));
     _editDetailButton->setText("Edit");
-    _editDetailButton->setFixedWidth(80);
+    _editDetailButton->setFixedWidth(100);
     _detailsGroupBoxLayout->addWidget(_editDetailButton, 1, 3);
 
     // delete detail button
     _deleteDetailButton = new QPushButton(_detailsGroupBox);
+    _deleteDetailButton->setIcon(QIcon(":/Graphics/Delete.svg"));
     _deleteDetailButton->setText("Delete");
-    _deleteDetailButton->setFixedWidth(80);
+    _deleteDetailButton->setFixedWidth(100);
     _detailsGroupBoxLayout->addWidget(_deleteDetailButton, 1, 4);
 
     // connections

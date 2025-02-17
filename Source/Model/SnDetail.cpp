@@ -104,7 +104,8 @@ Matrix<double> SnDetail::executeRainflowCounting(const Matrix<double>& history, 
 
 }
 
-SnDetail::SnDetail(QObject* parent) : Detail(parent), _timeUnits("s"), _repCount(1.0) {}
+SnDetail::SnDetail(QObject* parent) : Detail(parent), _timeUnits("s"), _repCount(1.0), _customResistanceFactor(1.0),
+    _stressFactor(1.0) {}
 
 Detail::Approach SnDetail::approach() const { return Approach::Sn; }
 
@@ -187,5 +188,69 @@ void SnDetail::executeRainflowCounting() {
     if (_history.rowCount() < 3 || _history.columnCount() != 2 || _extrema.size() <= 2)
         throw std::runtime_error("The stress-time history must first be specified.");
     _rainflow = executeRainflowCounting(_history, _extrema, _repCount);
+    emit modified();
+}
+
+SnDetail::DesignConcept SnDetail::designConcept() const { return _designConcept; }
+
+void SnDetail::setDesignConcept(DesignConcept designConcept) {
+    if (designConcept == _designConcept) return;
+    _designConcept = designConcept;
+    emit modified();
+}
+
+SnDetail::ConsequenceOfFailure SnDetail::consequenceOfFailure() const { return _consequenceOfFailure; }
+
+void SnDetail::setConsequenceOfFailure(ConsequenceOfFailure consequenceOfFailure) {
+    if (consequenceOfFailure == _consequenceOfFailure) return;
+    _consequenceOfFailure = consequenceOfFailure;
+    emit modified();
+}
+
+bool SnDetail::useCustomResistanceFactor() const { return _useCustomResistanceFactor; }
+
+void SnDetail::setUseCustomResistanceFactor(bool value) {
+    if (value == _useCustomResistanceFactor) return;
+    _useCustomResistanceFactor = value;
+    emit modified();
+}
+
+double SnDetail::customResistanceFactor() const { return _customResistanceFactor; }
+
+void SnDetail::setCustomResistanceFactor(double value) {
+    if (value == _customResistanceFactor) return;
+    if (value <= 0.0) throw std::invalid_argument("A positive value is required.");
+    _customResistanceFactor = value;
+    emit modified();
+}
+
+double SnDetail::resistanceFactor() const {
+    if (_useCustomResistanceFactor) return _customResistanceFactor;
+    else switch (_designConcept) {
+        case DesignConcept::SafeLife:
+            switch (_consequenceOfFailure) {
+                case ConsequenceOfFailure::LowConsequence:    return 1.15;
+                case ConsequenceOfFailure::MediumConsequence: return 1.25;
+                case ConsequenceOfFailure::HighConsequence:   return 1.35;
+                default: throw std::logic_error("Case not implemented.");
+            }
+        case DesignConcept::DamageTolerant:
+            switch (_consequenceOfFailure) {
+                case ConsequenceOfFailure::LowConsequence:    return 1.00;
+                case ConsequenceOfFailure::MediumConsequence: return 1.15;
+                case ConsequenceOfFailure::HighConsequence:   return 1.25;
+                default: throw std::logic_error("Case not implemented.");
+            }
+        default:
+            throw std::logic_error("Case not implemented.");
+    }
+}
+
+double SnDetail::stressFactor() const { return _stressFactor; }
+
+void SnDetail::setStressFactor(double value) {
+    if (value == _stressFactor) return;
+    if (value <= 0.0) throw std::invalid_argument("A positive value is required.");
+    _stressFactor = value;
     emit modified();
 }

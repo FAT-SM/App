@@ -5,4 +5,5 @@
 #include "Gui/SnCurveTab.hpp"
 #include "Gui/HistoryTab.hpp"
 #include "Gui/RainflowTab.hpp"
+#include "Gui/DamageTab.hpp"
 #include "Gui/MainWindow.hpp"

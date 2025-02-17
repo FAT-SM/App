@@ -8,6 +8,10 @@
         <file>Graphics/PasteTable.svg</file>
         <file>Graphics/ClearTable.svg</file>
         <file>Graphics/Calculator.svg</file>
+        <file>Graphics/Ok.svg</file>
+        <file>Graphics/Cancel.svg</file>
+        <file>Graphics/Add.svg</file>
         <file>Graphics/Edit.svg</file>
+        <file>Graphics/Delete.svg</file>
     </qresource>
 </RCC>

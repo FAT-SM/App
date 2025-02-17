@@ -92,6 +92,11 @@ void MainWindow::buildGui() {
     _rainflowItem->setText("Rainflow Counting");
     _snNavBar->addItem(_rainflowItem);
 
+    // damage item
+    _damageItem = new QListWidgetItem(_snNavBar);
+    _damageItem->setText("Fatigue Damage");
+    _snNavBar->addItem(_damageItem);
+
     // main stack
     _mainStack = new QStackedWidget(_centralWidget);
     _mainStack->setProperty("parent", "true");
@@ -113,6 +118,10 @@ void MainWindow::buildGui() {
     // rainflow tab
     _rainflowTab = new RainflowTab(_mainStack);
     _mainStack->addWidget(_rainflowTab);
+
+    // damage tab
+    _damageTab = new DamageTab(_mainStack);
+    _mainStack->addWidget(_damageTab);
 
     // connections
     QObject::connect(_homeTab, &HomeTab::editDetailRequestReceived, this, &MainWindow::onEditDetailRequestReceived);
@@ -192,6 +201,7 @@ void MainWindow::onSnNavBarCurrentRowChanged() {
     _snCurveTab->setDetail(nullptr);
     _historyTab->setDetail(nullptr);
     _rainflowTab->setDetail(nullptr);
+    _damageTab->setDetail(nullptr);
     if (_detail == nullptr) return;
 
     // show new
@@ -206,6 +216,10 @@ void MainWindow::onSnNavBarCurrentRowChanged() {
     else if (_snNavBar->currentItem() == _rainflowItem) {
         _mainStack->setCurrentWidget(_rainflowTab);
         _rainflowTab->setDetail(dynamic_cast<SnDetail*>(_detail));
+    }
+    else if (_snNavBar->currentItem() == _damageItem) {
+        _mainStack->setCurrentWidget(_damageTab);
+        _damageTab->setDetail(dynamic_cast<SnDetail*>(_detail));
     }
 
 }

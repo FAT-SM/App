@@ -60,6 +60,9 @@
     <ClCompile Include="Source\Gui\RainflowTab.cpp">
       <Filter>Source\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Gui\DamageTab.cpp">
+      <Filter>Source\Gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -86,6 +89,18 @@
       <Filter>Resource\Graphics</Filter>
     </None>
     <None Include="Resource\Graphics\Edit.svg">
+      <Filter>Resource\Graphics</Filter>
+    </None>
+    <None Include="Resource\Graphics\Delete.svg">
+      <Filter>Resource\Graphics</Filter>
+    </None>
+    <None Include="Resource\Graphics\Add.svg">
+      <Filter>Resource\Graphics</Filter>
+    </None>
+    <None Include="Resource\Graphics\Cancel.svg">
+      <Filter>Resource\Graphics</Filter>
+    </None>
+    <None Include="Resource\Graphics\Ok.svg">
       <Filter>Resource\Graphics</Filter>
     </None>
   </ItemGroup>
@@ -132,6 +147,9 @@
       <Filter>Source\Gui</Filter>
     </QtMoc>
     <QtMoc Include="Source\Gui\RainflowTab.hpp">
+      <Filter>Source\Gui</Filter>
+    </QtMoc>
+    <QtMoc Include="Source\Gui\DamageTab.hpp">
       <Filter>Source\Gui</Filter>
     </QtMoc>
   </ItemGroup>

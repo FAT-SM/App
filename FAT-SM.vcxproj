@@ -115,6 +115,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Core\Matrix.cpp" />
     <ClCompile Include="Source\Core\Utility.cpp" />
+    <ClCompile Include="Source\Gui\DamageTab.cpp" />
     <ClCompile Include="Source\Gui\EditTableDialog.cpp" />
     <ClCompile Include="Source\Gui\HistoryTab.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -139,11 +140,15 @@
   <ItemGroup>
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
+    <None Include="Resource\Graphics\Add.svg" />
     <None Include="Resource\Graphics\Calculator.svg" />
+    <None Include="Resource\Graphics\Cancel.svg" />
+    <None Include="Resource\Graphics\Delete.svg" />
     <None Include="Resource\Graphics\Edit.svg" />
     <None Include="Resource\Graphics\Home.svg" />
     <None Include="Resource\Graphics\Info.svg" />
     <None Include="Resource\Graphics\ClearTable.svg" />
+    <None Include="Resource\Graphics\Ok.svg" />
     <None Include="Resource\Graphics\PasteTable.svg" />
     <None Include="Resource\Graphics\SnApproach.svg" />
     <None Include="Resource\StyleSheets\NavBar.qss" />
@@ -159,6 +164,7 @@
     <QtMoc Include="Source\Gui\SnCurveTab.hpp" />
     <QtMoc Include="Source\Gui\MainWindow.hpp" />
     <QtMoc Include="Source\Gui\HistoryTab.hpp" />
+    <QtMoc Include="Source\Gui\DamageTab.hpp" />
     <ClInclude Include="Source\Model.hpp" />
     <QtMoc Include="Source\Model\Project.hpp" />
     <QtMoc Include="Source\Model\SnDetail.hpp" />
