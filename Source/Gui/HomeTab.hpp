@@ -20,10 +20,10 @@ private:
     QGroupBox* _detailsGroupBox;
     QGridLayout* _detailsGroupBoxLayout;
     QTableWidget* _detailsTable;
-    QPushButton* _newSnDetailButton;
+    QPushButton* _addSnDetailButton;
     QPushButton* _newLefmDetailButton;
     QPushButton* _editDetailButton;
-    QPushButton* _deleteDetailButton;
+    QPushButton* _removeDetailButton;
     Project* _project;
 
     /* Builds the GUI. */
@@ -58,11 +58,11 @@ public:
     /* On: edit detail button clicked. */
     void onEditDetailButtonClicked();
 
-    /* On: delete detail button clicked. */
-    void onDeleteDetailButtonClicked();
+    /* On: remove detail button clicked. */
+    void onRemoveDetailButtonClicked();
 
-    /* On: new S-N detail button clicked. */
-    void onNewSnDetailButtonClicked();
+    /* On: add S-N detail button clicked. */
+    void onAddSnDetailButtonClicked();
 
 signals:
 

@@ -57,17 +57,17 @@ void HomeTab::buildGui() {
     _detailsTable->setSelectionBehavior(QTableWidget::SelectRows);
     _detailsGroupBoxLayout->addWidget(_detailsTable, 0, 0, 1, 5);
 
-    // new s-n detail button
-    _newSnDetailButton = new QPushButton(_detailsGroupBox);
-    _newSnDetailButton->setIcon(QIcon(":/Graphics/Add.svg"));
-    _newSnDetailButton->setText("New (S-N)");
-    _newSnDetailButton->setFixedWidth(100);
-    _detailsGroupBoxLayout->addWidget(_newSnDetailButton, 1, 1);
+    // add s-n detail button
+    _addSnDetailButton = new QPushButton(_detailsGroupBox);
+    _addSnDetailButton->setIcon(QIcon(":/Graphics/Add.svg"));
+    _addSnDetailButton->setText("Add S-N");
+    _addSnDetailButton->setFixedWidth(100);
+    _detailsGroupBoxLayout->addWidget(_addSnDetailButton, 1, 1);
 
-    // new lefm detail button
+    // add lefm detail button
     _newLefmDetailButton = new QPushButton(_detailsGroupBox);
     _newLefmDetailButton->setIcon(QIcon(":/Graphics/Add.svg"));
-    _newLefmDetailButton->setText("New (LEFM)");
+    _newLefmDetailButton->setText("Add LEFM");
     _newLefmDetailButton->setFixedWidth(100);
     _detailsGroupBoxLayout->addWidget(_newLefmDetailButton, 1, 2);
 
@@ -78,12 +78,12 @@ void HomeTab::buildGui() {
     _editDetailButton->setFixedWidth(100);
     _detailsGroupBoxLayout->addWidget(_editDetailButton, 1, 3);
 
-    // delete detail button
-    _deleteDetailButton = new QPushButton(_detailsGroupBox);
-    _deleteDetailButton->setIcon(QIcon(":/Graphics/Remove.svg"));
-    _deleteDetailButton->setText("Delete");
-    _deleteDetailButton->setFixedWidth(100);
-    _detailsGroupBoxLayout->addWidget(_deleteDetailButton, 1, 4);
+    // remove detail button
+    _removeDetailButton = new QPushButton(_detailsGroupBox);
+    _removeDetailButton->setIcon(QIcon(":/Graphics/Remove.svg"));
+    _removeDetailButton->setText("Remove");
+    _removeDetailButton->setFixedWidth(100);
+    _detailsGroupBoxLayout->addWidget(_removeDetailButton, 1, 4);
 
     // connections
     _projectDescriptionBox->installEventFilter(this);
@@ -91,8 +91,8 @@ void HomeTab::buildGui() {
     QObject::connect(_projectNameBox, &QLineEdit::editingFinished, this, &HomeTab::onProjectNameBoxEdited);
     QObject::connect(_detailsTable, &QTableWidget::cellChanged, this, &HomeTab::onDetailsTableEdited);
     QObject::connect(_editDetailButton, &QPushButton::clicked, this, &HomeTab::onEditDetailButtonClicked);
-    QObject::connect(_deleteDetailButton, &QPushButton::clicked, this, &HomeTab::onDeleteDetailButtonClicked);
-    QObject::connect(_newSnDetailButton, &QPushButton::clicked, this, &HomeTab::onNewSnDetailButtonClicked);
+    QObject::connect(_removeDetailButton, &QPushButton::clicked, this, &HomeTab::onRemoveDetailButtonClicked);
+    QObject::connect(_addSnDetailButton, &QPushButton::clicked, this, &HomeTab::onAddSnDetailButtonClicked);
 
 }
 
@@ -102,19 +102,19 @@ void HomeTab::refreshGui() {
     if (_project == nullptr) {
         _projectNameBox->setEnabled(false);
         _projectDescriptionBox->setEnabled(false);
-        _newSnDetailButton->setEnabled(false);
+        _addSnDetailButton->setEnabled(false);
         _newLefmDetailButton->setEnabled(false);
         _editDetailButton->setEnabled(false);
-        _deleteDetailButton->setEnabled(false);
+        _removeDetailButton->setEnabled(false);
         _projectNameBox->clear();
         _projectDescriptionBox->clear();
     } else {
         _projectNameBox->setEnabled(true);
         _projectDescriptionBox->setEnabled(true);
-        _newSnDetailButton->setEnabled(true);
+        _addSnDetailButton->setEnabled(true);
         _newLefmDetailButton->setEnabled(true);
         _editDetailButton->setEnabled(_detailsTable->currentRow() >= 0);
-        _deleteDetailButton->setEnabled(_detailsTable->currentRow() >= 0);
+        _removeDetailButton->setEnabled(_detailsTable->currentRow() >= 0);
         _projectNameBox->setText(_project->name());
         _projectDescriptionBox->setPlainText(_project->description());
     }
@@ -164,7 +164,7 @@ void HomeTab::setProject(Project* project) {
 
 void HomeTab::onCurrentDetailChanged() {
     _editDetailButton->setEnabled(_detailsTable->currentRow() >= 0);
-    _deleteDetailButton->setEnabled(_detailsTable->currentRow() >= 0);
+    _removeDetailButton->setEnabled(_detailsTable->currentRow() >= 0);
 }
 
 void HomeTab::onProjectNameBoxEdited() {
@@ -212,13 +212,13 @@ void HomeTab::onEditDetailButtonClicked() {
         emit editDetailRequestReceived(row);
 }
 
-void HomeTab::onDeleteDetailButtonClicked() {
+void HomeTab::onRemoveDetailButtonClicked() {
     if (_project == nullptr) return;
     if (int row = _detailsTable->currentRow(); row >= 0)
         _project->destroyDetail(row);
 }
 
-void HomeTab::onNewSnDetailButtonClicked() {
+void HomeTab::onAddSnDetailButtonClicked() {
     if (_project == nullptr) return;
     _project->createDetail(Detail::Approach::Sn);
     _detailsTable->setCurrentCell(_project->detailCount() - 1, 0);
