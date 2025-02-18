@@ -1,4 +1,4 @@
-#include <vector>
+﻿#include <vector>
 #include <limits>
 #include <utility>
 #include <algorithm>
@@ -59,6 +59,9 @@ void RainflowTab::buildGui() {
     _rainflowTable = new QTableWidget(_rainflowGroupBox);
     _rainflowTable->setEditTriggers(QTableWidget::NoEditTriggers);
     _rainflowGroupBoxLayout->addWidget(_rainflowTable, 1, 0);
+
+    // rainflow table notes
+    _rainflowGroupBoxLayout->addWidget(new QLabel(" \u00B9 Includes repeated occurrences.", _rainflowGroupBox), 2, 0);
 
     // chart A
     _chartA = new QChart();
@@ -130,7 +133,7 @@ void RainflowTab::refreshGui() {
         if (_detail->ignoreTime()) {
             _rainflowTable->setColumnCount(3);
             _rainflowTable->setHorizontalHeaderLabels({
-                "Count\n[Cycles]",
+                "Count\u00B9\n[Cycles]",
                 "Stress Range\n[MPa]",
                 "Mean Stress\n[MPa]"
             });
@@ -140,7 +143,7 @@ void RainflowTab::refreshGui() {
         } else {
             _rainflowTable->setColumnCount(5);
             _rainflowTable->setHorizontalHeaderLabels({
-                "Count\n[Cycles]",
+                "Count\u00B9\n[Cycles]",
                 "Stress Range\n[MPa]",
                 "Mean Stress\n[MPa]",
                 QString("Start Time\n[%1]").arg(_detail->timeUnits()),

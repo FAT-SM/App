@@ -1,3 +1,4 @@
+#include <cmath>
 #include <stdexcept>
 #include "Gui/DamageTab.hpp"
 
@@ -85,12 +86,44 @@ void DamageTab::buildGui() {
     _computeButton = new QPushButton(_damageGroupBox);
     _computeButton->setIcon(QIcon(":/Graphics/Calculator.svg"));
     _computeButton->setText("Calculate");
-    _damageGroupBoxLayout->addWidget(_computeButton, 0, 0);
+    _damageGroupBoxLayout->addWidget(_computeButton, 0, 0, 1, 2);
+
+    // damage box
+    _damageBox = new QLineEdit(_damageGroupBox);
+    _damageBox->setReadOnly(true);
+    _damageBox->setAlignment(Qt::AlignCenter);
+    _damageGroupBoxLayout->addWidget(_damageBox, 2, 0);
+
+    // damage info label
+    _damageInfoLabel = new QLabel(_damageGroupBox);
+    _damageInfoLabel->setPixmap(QIcon(":/Graphics/Info.svg").pixmap(20, 20));
+    _damageInfoLabel->setToolTip(
+        "A value greater than or equal to 1 means failure due to fatigue damage accumulation.");
+    _damageGroupBoxLayout->addWidget(_damageInfoLabel, 2, 1);
 
     // damage table
     _damageTable = new QTableWidget(_damageGroupBox);
     _damageTable->setEditTriggers(QTableWidget::NoEditTriggers);
-    _damageGroupBoxLayout->addWidget(_damageTable, 1, 0);
+    _damageTable->setColumnCount(4);
+    _damageTable->setHorizontalHeaderLabels({
+        "Count\u00B9\n[Cycles]",
+        "Stress Range\u00B2\n[MPa]",
+        "Endurance\u00B3\n[Cycles]",
+        "Damage\n[-]"
+    });
+    _damageTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    _damageTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    _damageTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    _damageTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+    _damageGroupBoxLayout->addWidget(_damageTable, 1, 0, 1, 2);
+
+    // damage table notes
+    _damageGroupBoxLayout->addWidget(
+        new QLabel(" \u00B9 Includes repeated occurrences.", _damageGroupBox), 3, 0, 1, 2);
+    _damageGroupBoxLayout->addWidget(
+        new QLabel(" \u00B2 Influenced by the partial factor for applied stress ranges.", _damageGroupBox), 4, 0, 1, 2);
+    _damageGroupBoxLayout->addWidget(
+        new QLabel(" \u00B3 Influenced by the partial factor for fatigue resistance.", _damageGroupBox), 5, 0, 1, 2);
 
     // sizes
     _layout->setRowStretch(0, 0);
@@ -107,6 +140,7 @@ void DamageTab::buildGui() {
     connect(_customResistanceFactorBox, &QCheckBox::checkStateChanged, this, &DamageTab::onUseCustomResistanceChanged);
     connect(_resistanceFactorValueBox, &QLineEdit::editingFinished, this, &DamageTab::onResistanceFactorChanged);
     connect(_stressFactorValueBox, &QLineEdit::editingFinished, this, &DamageTab::onStressFactorChanged);
+    connect(_computeButton, &QPushButton::clicked, this, &DamageTab::onComputeButtonClicked);
 
 }
 
@@ -117,11 +151,17 @@ void DamageTab::refreshGui() {
         _customResistanceFactorBox->setEnabled(false);
         _resistanceFactorValueBox->setEnabled(false);
         _stressFactorValueBox->setEnabled(false);
+        _damageBox->setEnabled(false);
+        _damageTable->setEnabled(false);
         _designConceptBox->clear();
         _consequenceOfFailureBox->clear();
         _customResistanceFactorBox->setChecked(false);
         _resistanceFactorValueBox->clear();
         _stressFactorValueBox->clear();
+        _damageBox->clear();
+        _damageBox->setStyleSheet("background-color: white; color: black;");
+        _damageTable->clearContents();
+        _damageTable->setRowCount(0);
     } else {
         if (_detail->useCustomResistanceFactor()) {
             _designConceptBox->setEnabled(false);
@@ -162,9 +202,30 @@ void DamageTab::refreshGui() {
         _customResistanceFactorBox->setEnabled(true);
         _resistanceFactorValueBox->setEnabled(_detail->useCustomResistanceFactor());
         _stressFactorValueBox->setEnabled(true);
+        _damageBox->setEnabled(true);
+        _damageTable->setEnabled(true);
         _customResistanceFactorBox->setChecked(_detail->useCustomResistanceFactor());
         _resistanceFactorValueBox->setText(QString::number(_detail->resistanceFactor()));
         _stressFactorValueBox->setText(QString::number(_detail->stressFactor()));
+        if (_detail->damageCounts().rowCount() == 0) {
+            _damageBox->setText("Accumulated Damage: ...");
+            _damageBox->setStyleSheet("background-color: white; color: black;");
+        }
+        else {
+            double sum = 0.0;
+            for (int i = 0; i < _detail->damageCounts().rowCount(); ++i) sum += _detail->damageCounts().at(i, 3);
+            _damageBox->setText(QString("Accumulated Damage: %1").arg(QString::number(sum, 'g', 8)));
+            if (sum < 1.0) _damageBox->setStyleSheet("background-color: green; color: white;");
+            else _damageBox->setStyleSheet("background-color: red; color: white;");
+        }
+        _damageTable->setRowCount(_detail->damageCounts().rowCount());
+        for (int i = 0; i < _damageTable->rowCount(); ++i) {
+            for (int j = 0; j < _damageTable->columnCount(); ++j) {
+                double value = _detail->damageCounts().at(i, j);
+                QString text = std::isinf(value) ? "\u221E" : QString::number(value, 'g', 5);
+                _damageTable->setItem(i, j, new QTableWidgetItem(text));
+            }
+        }
     }
 }
 
@@ -235,5 +296,15 @@ void DamageTab::onStressFactorChanged() {
         QMessageBox::critical(this, "Error",
             QString("Invalid partial factor for applied stress ranges:\n%1").arg(e.what()));
         _stressFactorValueBox->setText(QString::number(_detail->stressFactor()));
+    }
+}
+
+void DamageTab::onComputeButtonClicked() {
+    if (_detail == nullptr) return;
+    try {
+        _detail->executeMinerSummation();
+    }
+    catch (const std::exception& e) {
+        QMessageBox::critical(this, "Error", QString("Missing input data:\n%1").arg(e.what()));
     }
 }

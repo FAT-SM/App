@@ -1,5 +1,6 @@
-#include <cmath>
+﻿#include <cmath>
 #include <tuple>
+#include <limits>
 #include <stdexcept>
 #include "Model/SnDetail.hpp"
 
@@ -104,6 +105,55 @@ Matrix<double> SnDetail::executeRainflowCounting(const Matrix<double>& history, 
 
 }
 
+Matrix<double> SnDetail::executeMinerSummation(double category, double resistanceFactor, const Matrix<double>& slopes,
+    const Matrix<double>& rainflow, double stressFactor) {
+
+    // initialize storage
+    Matrix<double> results(rainflow.rowCount(), 4);
+
+    // s-n curve calculations
+    double NC = 2e6;
+    double ΔσC = category/resistanceFactor;
+    std::vector<std::tuple<double, double, double>> snPoints;
+    snPoints.push_back({ ΔσC, NC, 0.0 }); // dummy reference point
+    for (int i = 0; i < slopes.rowCount(); ++i) {
+        auto m = slopes.at(i, 0);
+        auto N2 = slopes.at(i, 1);
+        auto [Δσ1, N1, _] = snPoints.back();
+        auto Δσ2 = Δσ1*std::pow(N1/N2, 1.0/m);
+        snPoints.push_back({ Δσ2, N2, m });
+    }
+    snPoints.erase(snPoints.begin()); // remove dummy reference point
+
+    // loop counts
+    for (int i = 0; i < results.rowCount(); ++i) {
+        double ni = rainflow.at(i, 0);
+        double Δσ = rainflow.at(i, 1)*stressFactor;
+
+        // compute endurance and damage
+        double Di = 0.0;
+        double Ni = std::numeric_limits<double>::infinity();
+        for (auto [ΔσL, NL, m] : snPoints) {
+            double _Ni = NL*std::pow(ΔσL/Δσ, m);
+            if (_Ni < NL) {
+                Ni = _Ni;
+                Di = ni/Ni;
+                break;
+            }
+        }
+
+        // store results
+        results.at(i, 0) = ni;
+        results.at(i, 1) = Δσ;
+        results.at(i, 2) = Ni;
+        results.at(i, 3) = Di;
+    }
+
+    // done
+    return results;
+
+}
+
 SnDetail::SnDetail(QObject* parent) : Detail(parent), _timeUnits("s"), _repCount(1.0), _customResistanceFactor(1.0),
     _stressFactor(1.0) {}
 
@@ -115,6 +165,7 @@ void SnDetail::setCategory(double category) {
     if (_category && category == *_category) return;
     if (category <= 0.0) throw std::invalid_argument("A positive value is required.");
     _category = category;
+    if (_damage.rowCount() > 0) _damage = Matrix<double>(); // clear old results
     emit modified();
 }
 
@@ -135,6 +186,7 @@ void SnDetail::setSlopes(const Matrix<double>& slopes) {
     if (slopes.at(0, 1) < 2e6)
         throw std::invalid_argument("Endurance limit must be greater than or equal to 2 million cycles.");
     _slopes = slopes;
+    if (_damage.rowCount() > 0) _damage = Matrix<double>(); // clear old results
     emit modified();
 }
 
@@ -162,6 +214,7 @@ void SnDetail::setRepCount(double repCount) {
     if (repCount <= 0.0) throw std::invalid_argument("A positive value is required.");
     _repCount = repCount;
     if (_rainflow.rowCount() > 0) _rainflow = Matrix<double>(); // clear old results
+    if (_damage.rowCount() > 0) _damage = Matrix<double>(); // clear old results
     emit modified();
 }
 
@@ -177,6 +230,7 @@ void SnDetail::setHistorySample(const Matrix<double>& history) {
     _extrema = findExtrema(history);
     _history = history;
     if (_rainflow.rowCount() > 0) _rainflow = Matrix<double>(); // clear old results
+    if (_damage.rowCount() > 0) _damage = Matrix<double>(); // clear old results
     emit modified();
 }
 
@@ -188,6 +242,7 @@ void SnDetail::executeRainflowCounting() {
     if (_history.rowCount() < 3 || _history.columnCount() != 2 || _extrema.size() <= 2)
         throw std::runtime_error("The stress-time history must first be specified.");
     _rainflow = executeRainflowCounting(_history, _extrema, _repCount);
+    if (_damage.rowCount() > 0) _damage = Matrix<double>(); // clear old results
     emit modified();
 }
 
@@ -196,6 +251,7 @@ SnDetail::DesignConcept SnDetail::designConcept() const { return _designConcept;
 void SnDetail::setDesignConcept(DesignConcept designConcept) {
     if (designConcept == _designConcept) return;
     _designConcept = designConcept;
+    if (_damage.rowCount() > 0) _damage = Matrix<double>(); // clear old results
     emit modified();
 }
 
@@ -204,6 +260,7 @@ SnDetail::ConsequenceOfFailure SnDetail::consequenceOfFailure() const { return _
 void SnDetail::setConsequenceOfFailure(ConsequenceOfFailure consequenceOfFailure) {
     if (consequenceOfFailure == _consequenceOfFailure) return;
     _consequenceOfFailure = consequenceOfFailure;
+    if (_damage.rowCount() > 0) _damage = Matrix<double>(); // clear old results
     emit modified();
 }
 
@@ -212,6 +269,7 @@ bool SnDetail::useCustomResistanceFactor() const { return _useCustomResistanceFa
 void SnDetail::setUseCustomResistanceFactor(bool value) {
     if (value == _useCustomResistanceFactor) return;
     _useCustomResistanceFactor = value;
+    if (_damage.rowCount() > 0) _damage = Matrix<double>(); // clear old results
     emit modified();
 }
 
@@ -221,6 +279,7 @@ void SnDetail::setCustomResistanceFactor(double value) {
     if (value == _customResistanceFactor) return;
     if (value <= 0.0) throw std::invalid_argument("A positive value is required.");
     _customResistanceFactor = value;
+    if (_damage.rowCount() > 0) _damage = Matrix<double>(); // clear old results
     emit modified();
 }
 
@@ -252,5 +311,17 @@ void SnDetail::setStressFactor(double value) {
     if (value == _stressFactor) return;
     if (value <= 0.0) throw std::invalid_argument("A positive value is required.");
     _stressFactor = value;
+    if (_damage.rowCount() > 0) _damage = Matrix<double>(); // clear old results
+    emit modified();
+}
+
+const Matrix<double>& SnDetail::damageCounts() const { return _damage; }
+
+void SnDetail::executeMinerSummation() {
+    if (!_category || _slopes.rowCount() == 0 || _slopes.columnCount() != 2)
+        throw std::runtime_error("The S-N curve must first be specified.");
+    if (_rainflow.rowCount() == 0 || _rainflow.columnCount() != 5)
+        throw std::runtime_error("The rainflow counting algorithm must first be executed.");
+    _damage = executeMinerSummation(*_category, resistanceFactor(), _slopes, _rainflow, _stressFactor);
     emit modified();
 }

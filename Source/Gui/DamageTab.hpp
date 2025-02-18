@@ -27,6 +27,8 @@ private:
     QGroupBox* _damageGroupBox;
     QGridLayout* _damageGroupBoxLayout;
     QPushButton* _computeButton;
+    QLineEdit* _damageBox;
+    QLabel* _damageInfoLabel;
     QTableWidget* _damageTable;
     SnDetail* _detail;
 
@@ -58,5 +60,8 @@ public:
 
     /* On: stress factor changed. */
     void onStressFactorChanged();
+
+    /* On: compute button clicked. */
+    void onComputeButtonClicked();
 
 };

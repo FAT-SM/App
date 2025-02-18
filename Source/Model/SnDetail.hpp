@@ -19,6 +19,19 @@ public:
     enum class ConsequenceOfFailure { LowConsequence, MediumConsequence, HighConsequence };
 
 private:
+
+    /* Finds the local extrema (minima and maxima) of the stress-time history (finds the load reversals). */
+    static std::vector<int> findExtrema(const Matrix<double>& history);
+
+    /* Performs the rainflow counting algorithm. */
+    static Matrix<double> executeRainflowCounting(const Matrix<double>& history, const std::vector<int>& extrema,
+        double repCount);
+
+    /* Performs Miner's summation algorithm. */
+    static Matrix<double> executeMinerSummation(double category, double resistanceFactor, const Matrix<double>& slopes,
+        const Matrix<double>& rainflow, double stressFactor);
+
+private:
     std::optional<double> _category;
     Matrix<double> _slopes;
     bool _ignoreTime;
@@ -32,13 +45,7 @@ private:
     bool _useCustomResistanceFactor;
     double _customResistanceFactor;
     double _stressFactor;
-
-    /* Finds the local extrema (minima and maxima) of the stress-time history (finds the load reversals). */
-    static std::vector<int> findExtrema(const Matrix<double>& history);
-
-    /* Performs the rainflow counting algorithm. */
-    static Matrix<double> executeRainflowCounting(const Matrix<double>& history, const std::vector<int>& extrema,
-        double repCount);
+    Matrix<double> _damage;
 
 public:
 
@@ -125,5 +132,11 @@ public:
 
     /* Sets the considered stress factor. */
     void setStressFactor(double value);
+
+    /* The results of the Miner's summation algorithm. */
+    const Matrix<double>& damageCounts() const;
+
+    /* Performs Miner's summation algorithm. */
+    void executeMinerSummation();
 
 };
