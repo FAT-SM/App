@@ -17,7 +17,7 @@ class MainWindow : public QMainWindow {
 public:
 
     /* Available modules. */
-    enum class Module { Home, SnDetail };
+    enum class Module { Home, SnDetail, LefmDetail };
 
 private:
     QStatusBar* _statusBar;
@@ -29,12 +29,16 @@ private:
     QListWidget* _mainNavBar;
     QListWidgetItem* _homeItem;
     QListWidgetItem* _snDetailItem;
+    QListWidgetItem* _lefmDetailItem;
     QStackedWidget* _sideStack;
     QListWidget* _snNavBar;
+    QListWidget* _lefmNavBar;
     QListWidgetItem* _snCurveItem;
-    QListWidgetItem* _historyItem;
-    QListWidgetItem* _rainflowItem;
+    QListWidgetItem* _snHistoryItem;
+    QListWidgetItem* _snRainflowItem;
     QListWidgetItem* _damageItem;
+    QListWidgetItem* _lefmHistoryItem;
+    QListWidgetItem* _lefmRainflowItem;
     QStackedWidget* _mainStack;
     HomeTab* _homeTab;
     SnCurveTab* _snCurveTab;
@@ -64,5 +68,8 @@ public:
 
     /* On: S-N nav bar current row changed. */
     void onSnNavBarCurrentRowChanged();
+
+    /* On: LEFM nav bar current row changed. */
+    void onLefmNavBarCurrentRowChanged();
 
 };

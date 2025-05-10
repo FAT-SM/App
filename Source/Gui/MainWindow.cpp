@@ -61,6 +61,12 @@ void MainWindow::buildGui() {
     _snDetailItem->setText("S-N Approach");
     _mainNavBar->addItem(_snDetailItem);
 
+    // lefm detail item
+    _lefmDetailItem = new QListWidgetItem(_mainNavBar);
+    _lefmDetailItem->setIcon(QIcon(":/Graphics/LefmApproach.svg"));
+    _lefmDetailItem->setText("LEFM Approach");
+    _mainNavBar->addItem(_lefmDetailItem);
+
     // side stack
     _sideStack = new QStackedWidget(_centralWidget);
     _sideStack->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
@@ -82,20 +88,41 @@ void MainWindow::buildGui() {
     _snCurveItem->setText("S-N Curve");
     _snNavBar->addItem(_snCurveItem);
 
-    // history item
-    _historyItem = new QListWidgetItem(_snNavBar);
-    _historyItem->setText("Stress-Time History");
-    _snNavBar->addItem(_historyItem);
+    // s-n history item
+    _snHistoryItem = new QListWidgetItem(_snNavBar);
+    _snHistoryItem->setText("Stress-Time History");
+    _snNavBar->addItem(_snHistoryItem);
 
-    // rainflow item
-    _rainflowItem = new QListWidgetItem(_snNavBar);
-    _rainflowItem->setText("Rainflow Counting");
-    _snNavBar->addItem(_rainflowItem);
+    // s-n rainflow item
+    _snRainflowItem = new QListWidgetItem(_snNavBar);
+    _snRainflowItem->setText("Rainflow Counting");
+    _snNavBar->addItem(_snRainflowItem);
 
     // damage item
     _damageItem = new QListWidgetItem(_snNavBar);
     _damageItem->setText("Fatigue Damage");
     _snNavBar->addItem(_damageItem);
+
+    // lefm nav bar
+    _lefmNavBar = new QListWidget(_sideStack);
+    _lefmNavBar->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    _lefmNavBar->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    _lefmNavBar->setSelectionMode(QListWidget::SingleSelection);
+    _lefmNavBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    _lefmNavBar->setSizeAdjustPolicy(QListWidget::AdjustToContents);
+    _lefmNavBar->setMinimumWidth(_mainNavBar->minimumWidth());
+    _lefmNavBar->setStyleSheet(_mainNavBar->styleSheet());
+    _sideStack->addWidget(_lefmNavBar);
+
+    // lefm history item
+    _lefmHistoryItem = new QListWidgetItem(_lefmNavBar);
+    _lefmHistoryItem->setText("Stress-Time History");
+    _lefmNavBar->addItem(_lefmHistoryItem);
+
+    // lefm rainflow item
+    _lefmRainflowItem = new QListWidgetItem(_lefmNavBar);
+    _lefmRainflowItem->setText("Rainflow Counting");
+    _lefmNavBar->addItem(_lefmRainflowItem);
 
     // main stack
     _mainStack = new QStackedWidget(_centralWidget);
@@ -126,6 +153,7 @@ void MainWindow::buildGui() {
     // connections
     QObject::connect(_homeTab, &HomeTab::editDetailRequestReceived, this, &MainWindow::onEditDetailRequestReceived);
     QObject::connect(_snNavBar, &QListWidget::currentRowChanged, this, &MainWindow::onSnNavBarCurrentRowChanged);
+    QObject::connect(_lefmNavBar, &QListWidget::currentRowChanged, this, &MainWindow::onLefmNavBarCurrentRowChanged);
     QObject::connect(_mainNavBar, &QListWidget::currentRowChanged, this, [this]() {
         if (_mainNavBar->currentItem() == _homeItem) setModule(Module::Home);
     });
@@ -157,21 +185,35 @@ void MainWindow::setModule(Module module, bool force) {
             _detail = nullptr;
             _snNavBar->clearSelection();
             _snNavBar->setCurrentRow(-1);
+            _lefmNavBar->clearSelection();
+            _lefmNavBar->setCurrentRow(-1);
             _sideStack->setVisible(false);
             _mainNavBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
             _mainNavBar->setCurrentRow(0);
-            _snDetailItem->setHidden(true);
+            _mainNavBar->takeItem(_mainNavBar->row(_snDetailItem));
+            _mainNavBar->takeItem(_mainNavBar->row(_lefmDetailItem));
             _mainStack->setCurrentWidget(_homeTab);
             _homeTab->setProject(_project);
             break;
         case Module::SnDetail:
             if (_detail == nullptr) break;
             _homeTab->setProject(nullptr);
-            _snDetailItem->setHidden(false);
+            _mainNavBar->addItem(_snDetailItem);
             _sideStack->setVisible(true);
+            _sideStack->setCurrentWidget(_snNavBar);
             _mainNavBar->setCurrentItem(_snDetailItem);
             _mainNavBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
             _snNavBar->setCurrentRow(0);
+            break;
+        case Module::LefmDetail:
+            if (_detail == nullptr) break;
+            _homeTab->setProject(nullptr);
+            _mainNavBar->addItem(_lefmDetailItem);
+            _sideStack->setVisible(true);
+            _sideStack->setCurrentWidget(_lefmNavBar);
+            _mainNavBar->setCurrentItem(_lefmDetailItem);
+            _mainNavBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+            _lefmNavBar->setCurrentRow(0);
             break;
         default:
             throw std::logic_error("Case not implemented.");
@@ -190,6 +232,7 @@ void MainWindow::onEditDetailRequestReceived(int index) {
     // update gui
     switch (_detail->approach()) {
         case Detail::Approach::Sn: setModule(Module::SnDetail); break;
+        case Detail::Approach::Lefm: setModule(Module::LefmDetail); break;
         default: throw std::logic_error("Case not implemented.");
     }
 
@@ -209,17 +252,36 @@ void MainWindow::onSnNavBarCurrentRowChanged() {
         _mainStack->setCurrentWidget(_snCurveTab);
         _snCurveTab->setDetail(dynamic_cast<SnDetail*>(_detail));
     }
-    else if (_snNavBar->currentItem() == _historyItem) {
+    else if (_snNavBar->currentItem() == _snHistoryItem) {
         _mainStack->setCurrentWidget(_historyTab);
-        _historyTab->setDetail(dynamic_cast<SnDetail*>(_detail));
+        _historyTab->setDetail(_detail);
     }
-    else if (_snNavBar->currentItem() == _rainflowItem) {
+    else if (_snNavBar->currentItem() == _snRainflowItem) {
         _mainStack->setCurrentWidget(_rainflowTab);
-        _rainflowTab->setDetail(dynamic_cast<SnDetail*>(_detail));
+        _rainflowTab->setDetail(_detail);
     }
     else if (_snNavBar->currentItem() == _damageItem) {
         _mainStack->setCurrentWidget(_damageTab);
         _damageTab->setDetail(dynamic_cast<SnDetail*>(_detail));
+    }
+
+}
+
+void MainWindow::onLefmNavBarCurrentRowChanged() {
+
+    // clear previous
+    _historyTab->setDetail(nullptr);
+    _rainflowTab->setDetail(nullptr);
+    if (_detail == nullptr) return;
+
+    // show new
+    if (_lefmNavBar->currentItem() == _lefmHistoryItem) {
+        _mainStack->setCurrentWidget(_historyTab);
+        _historyTab->setDetail(_detail);
+    }
+    else if (_lefmNavBar->currentItem() == _lefmRainflowItem) {
+        _mainStack->setCurrentWidget(_rainflowTab);
+        _rainflowTab->setDetail(_detail);
     }
 
 }

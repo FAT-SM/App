@@ -19,19 +19,6 @@ public:
     enum class ConsequenceOfFailure { LowConsequence, MediumConsequence, HighConsequence };
 
 private:
-
-    /* Finds the local extrema (minima and maxima) of the stress-time history (finds the load reversals). */
-    static std::vector<int> findExtrema(const Matrix<double>& history);
-
-    /* Performs the rainflow counting algorithm. */
-    static Matrix<double> executeRainflowCounting(const Matrix<double>& history, const std::vector<int>& extrema,
-        double repCount);
-
-    /* Performs Miner's summation algorithm. */
-    static Matrix<double> executeMinerSummation(double category, double resistanceFactor, const Matrix<double>& slopes,
-        const Matrix<double>& rainflow, double stressFactor);
-
-private:
     std::optional<double> _category;
     Matrix<double> _slopes;
     bool _ignoreTime;
@@ -68,37 +55,37 @@ public:
     void setSlopes(const Matrix<double>& slopes);
 
     /* Flags if the stress-time history does not include a time variable. */
-    bool ignoreTime() const;
+    bool ignoreTime() const override;
 
     /* Sets if the stress-time history does not include a time variable. */
-    void setIgnoreTime(bool ignoreTime);
+    void setIgnoreTime(bool ignoreTime) override;
 
     /* The stress-time history time units. */
-    const QString& timeUnits() const;
+    const QString& timeUnits() const override;
 
     /* Sets the stress-time history time units. */
-    void setTimeUnits(const QString& timeUnits);
+    void setTimeUnits(const QString& timeUnits) override;
 
     /* The number of times the sampled stress-time history repeats. */
-    double repCount() const;
+    double repCount() const override;
 
     /* Sets the number of times the sampled stress-time history repeats. */
-    void setRepCount(double repCount);
+    void setRepCount(double repCount) override;
 
     /* The sampled stress-time history. */
-    const Matrix<double>& historySample() const;
+    const Matrix<double>& historySample() const override;
 
     /* Sets the sampled stress-time history. */
-    void setHistorySample(const Matrix<double>& history);
+    void setHistorySample(const Matrix<double>& history) override;
 
     /* The local extrema (minima and maxima) of the stress-time history (the load reversals). */
-    const std::vector<int>& historyExtrema() const;
+    const std::vector<int>& historyExtrema() const override;
 
     /* The results of the rainflow counting algorithm. */
-    const Matrix<double>& rainflowCounts() const;
+    const Matrix<double>& rainflowCounts() const override;
 
     /* Performs the rainflow counting algorithm. */
-    void executeRainflowCounting();
+    void executeRainflowCounting() override;
 
     /* The chosen design concept. */
     DesignConcept designConcept() const;

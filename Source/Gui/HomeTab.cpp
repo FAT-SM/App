@@ -93,6 +93,7 @@ void HomeTab::buildGui() {
     QObject::connect(_editDetailButton, &QPushButton::clicked, this, &HomeTab::onEditDetailButtonClicked);
     QObject::connect(_removeDetailButton, &QPushButton::clicked, this, &HomeTab::onRemoveDetailButtonClicked);
     QObject::connect(_addSnDetailButton, &QPushButton::clicked, this, &HomeTab::onAddSnDetailButtonClicked);
+    QObject::connect(_addLefmDetailButton, &QPushButton::clicked, this, &HomeTab::onAddLefmDetailButtonClicked);
 
 }
 
@@ -136,6 +137,7 @@ void HomeTab::refreshGui() {
             approachItem->setFlags(approachItem->flags() & ~Qt::ItemIsEditable);
             switch (detail.approach()) {
                 case Detail::Approach::Sn: approachItem->setText("S-N"); break;
+                case Detail::Approach::Lefm: approachItem->setText("LEFM"); break;
                 default: throw std::logic_error("Case not implemented.");
             }
             _detailsTable->setItem(i, 1, approachItem);
@@ -221,6 +223,13 @@ void HomeTab::onRemoveDetailButtonClicked() {
 void HomeTab::onAddSnDetailButtonClicked() {
     if (_project == nullptr) return;
     _project->createDetail(Detail::Approach::Sn);
+    _detailsTable->setCurrentCell(_project->detailCount() - 1, 0);
+    _detailsTable->scrollToBottom();
+}
+
+void HomeTab::onAddLefmDetailButtonClicked() {
+    if (_project == nullptr) return;
+    _project->createDetail(Detail::Approach::Lefm);
     _detailsTable->setCurrentCell(_project->detailCount() - 1, 0);
     _detailsTable->scrollToBottom();
 }

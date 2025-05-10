@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include "Model/SnDetail.hpp"
+#include "Model/LefmDetail.hpp"
 #include "Model/Project.hpp"
 
 Project::Project(QObject* parent) : QObject(parent) {
@@ -52,6 +53,7 @@ Detail& Project::createDetail(Detail::Approach approach) {
     static int counter = 0;
     switch (approach) {
         case Detail::Approach::Sn: _details.emplace_back(new SnDetail(this)); break;
+        case Detail::Approach::Lefm: _details.emplace_back(new LefmDetail(this)); break;
         default: throw std::logic_error("Case not implemented.");
     }
     _details.back()->setName(QString("%1-%2").arg(_details.back()->name()).arg(++counter));

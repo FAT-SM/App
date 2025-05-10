@@ -28,7 +28,7 @@ private:
     QChartView* _chartViewA;
     QChartView* _chartViewB;
     QWidget* _chartViewC;
-    SnDetail* _detail;
+    Detail* _detail;
 
     /* Builds the GUI. */
     void buildGui();
@@ -57,7 +57,7 @@ public:
     bool eventFilter(QObject* watched, QEvent* event) override;
 
     /* Sets the current detail. */
-    void setDetail(SnDetail* detail);
+    void setDetail(Detail* detail);
 
     /* On: compute button clicked. */
     void onComputeButtonClicked();

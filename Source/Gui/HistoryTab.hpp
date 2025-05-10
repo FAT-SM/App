@@ -35,7 +35,7 @@ private:
     QChart* _chartB;
     QChartView* _chartViewA;
     QChartView* _chartViewB;
-    SnDetail* _detail;
+    Detail* _detail;
 
     /* Builds the GUI. */
     void buildGui();
@@ -52,7 +52,7 @@ public:
     explicit HistoryTab(QWidget* parent = nullptr);
 
     /* Sets the current detail. */
-    void setDetail(SnDetail* detail);
+    void setDetail(Detail* detail);
 
     /* On: time group box toggled. */
     void onTimeGroupBoxToggled();

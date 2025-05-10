@@ -64,6 +64,9 @@ public:
     /* On: add S-N detail button clicked. */
     void onAddSnDetailButtonClicked();
 
+    /* On: add LEFM detail button clicked. */
+    void onAddLefmDetailButtonClicked();
+
 signals:
 
     /* Emitted on: edit detail request received. */

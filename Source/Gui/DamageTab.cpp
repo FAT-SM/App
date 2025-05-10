@@ -146,6 +146,7 @@ void DamageTab::buildGui() {
 
 void DamageTab::refreshGui() {
     if (_detail == nullptr) {
+        _computeButton->setEnabled(false);
         _designConceptBox->setEnabled(false);
         _consequenceOfFailureBox->setEnabled(false);
         _customResistanceFactorBox->setEnabled(false);
@@ -163,6 +164,7 @@ void DamageTab::refreshGui() {
         _damageTable->clearContents();
         _damageTable->setRowCount(0);
     } else {
+        _computeButton->setEnabled(true);
         if (_detail->useCustomResistanceFactor()) {
             _designConceptBox->setEnabled(false);
             _consequenceOfFailureBox->setEnabled(false);

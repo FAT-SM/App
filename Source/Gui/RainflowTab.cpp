@@ -431,11 +431,11 @@ bool RainflowTab::eventFilter(QObject* watched, QEvent* event) {
     return QWidget::eventFilter(watched, event);
 }
 
-void RainflowTab::setDetail(SnDetail* detail) {
+void RainflowTab::setDetail(Detail* detail) {
     if (detail == _detail) return;
-    if (_detail != nullptr) QObject::disconnect(_detail, &SnDetail::modified, this, &RainflowTab::refreshGui);
+    if (_detail != nullptr) QObject::disconnect(_detail, &Detail::modified, this, &RainflowTab::refreshGui);
     _detail = detail;
-    if (_detail != nullptr) QObject::connect(_detail, &SnDetail::modified, this, &RainflowTab::refreshGui);
+    if (_detail != nullptr) QObject::connect(_detail, &Detail::modified, this, &RainflowTab::refreshGui);
     refreshGui();
 }
 

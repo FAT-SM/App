@@ -63,6 +63,9 @@
     <ClCompile Include="Source\Gui\DamageTab.cpp">
       <Filter>Source\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Model\LefmDetail.cpp">
+      <Filter>Source\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -101,6 +104,9 @@
       <Filter>Resource\Graphics</Filter>
     </None>
     <None Include="Resource\Graphics\Ok.svg">
+      <Filter>Resource\Graphics</Filter>
+    </None>
+    <None Include="Resource\Graphics\LefmApproach.svg">
       <Filter>Resource\Graphics</Filter>
     </None>
   </ItemGroup>
@@ -151,6 +157,9 @@
     </QtMoc>
     <QtMoc Include="Source\Gui\DamageTab.hpp">
       <Filter>Source\Gui</Filter>
+    </QtMoc>
+    <QtMoc Include="Source\Model\LefmDetail.hpp">
+      <Filter>Source\Model</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

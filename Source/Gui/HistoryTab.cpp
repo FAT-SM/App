@@ -289,11 +289,11 @@ HistoryTab::HistoryTab(QWidget* parent) : QWidget(parent) {
     refreshGui();
 }
 
-void HistoryTab::setDetail(SnDetail* detail) {
+void HistoryTab::setDetail(Detail* detail) {
     if (detail == _detail) return;
-    if (_detail != nullptr) QObject::disconnect(_detail, &SnDetail::modified, this, &HistoryTab::refreshGui);
+    if (_detail != nullptr) QObject::disconnect(_detail, &Detail::modified, this, &HistoryTab::refreshGui);
     _detail = detail;
-    if (_detail != nullptr) QObject::connect(_detail, &SnDetail::modified, this, &HistoryTab::refreshGui);
+    if (_detail != nullptr) QObject::connect(_detail, &Detail::modified, this, &HistoryTab::refreshGui);
     refreshGui();
 }
 

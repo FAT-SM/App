@@ -36,13 +36,13 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.8.1_msvc2022_64</QtInstall>
-    <QtModules>core;gui;widgets;charts;datavisualization</QtModules>
+    <QtInstall>6.9.0_msvc2022_64</QtInstall>
+    <QtModules>core;gui;widgets;charts;datavisualization;graphs</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.8.1_msvc2022_64</QtInstall>
-    <QtModules>core;gui;widgets;charts;datavisualization</QtModules>
+    <QtInstall>6.9.0_msvc2022_64</QtInstall>
+    <QtModules>core;gui;widgets;charts;datavisualization;graphs</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
   </PropertyGroup>
@@ -129,6 +129,7 @@
     <ClCompile Include="Source\Gui\SnCurveTab.cpp" />
     <ClCompile Include="Source\Model\Detail.cpp" />
     <ClCompile Include="Source\Model\Project.cpp" />
+    <ClCompile Include="Source\Model\LefmDetail.cpp" />
     <ClCompile Include="Source\Model\SnDetail.cpp" />
     <ClCompile Include="Source\_main_.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -143,6 +144,7 @@
     <None Include="Resource\Graphics\Add.svg" />
     <None Include="Resource\Graphics\Calculator.svg" />
     <None Include="Resource\Graphics\Cancel.svg" />
+    <None Include="Resource\Graphics\LefmApproach.svg" />
     <None Include="Resource\Graphics\Remove.svg" />
     <None Include="Resource\Graphics\Edit.svg" />
     <None Include="Resource\Graphics\Home.svg" />
@@ -167,6 +169,7 @@
     <QtMoc Include="Source\Gui\DamageTab.hpp" />
     <ClInclude Include="Source\Model.hpp" />
     <QtMoc Include="Source\Model\Project.hpp" />
+    <QtMoc Include="Source\Model\LefmDetail.hpp" />
     <QtMoc Include="Source\Model\SnDetail.hpp" />
     <QtMoc Include="Source\Model\Detail.hpp" />
   </ItemGroup>
