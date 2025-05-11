@@ -14,5 +14,7 @@
         <file>Graphics/Add.svg</file>
         <file>Graphics/Edit.svg</file>
         <file>Graphics/Remove.svg</file>
+        <file>Graphics/ParisLaw.svg</file>
+        <file>Graphics/LefmDetails/IIW - Cruciform joint K-butt weld.svg</file>
     </qresource>
 </RCC>

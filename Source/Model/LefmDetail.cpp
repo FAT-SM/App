@@ -1,8 +1,43 @@
+﻿#include <stdexcept>
+#include <unordered_map>
 #include "Model/LefmDetail.hpp"
+
+const QStringList& LefmDetail::availableDetails() {
+    static const QStringList details {
+        "IIW - Cruciform joint K-butt weld",
+    };
+    return details;
+}
+
+const std::vector<std::tuple<QString, QString, QString>>& LefmDetail::parameters(const QString& detail) {
+    static const std::unordered_map<QString, std::vector<std::tuple<QString, QString, QString>>> map {
+        { "IIW - Cruciform joint K-butt weld", {
+            { "A",  "Weld throat size",              "mm"  },
+            { "a₀", "Surface crack depth (initial)", "mm"  },
+            { "H",  "Fillet weld leg length",        "mm"  },
+            { "T",  "Attachment plate thickness",    "mm"  },
+            { "t",  "Main plate thickness",          "mm"  },
+            { "W",  "Fillet weld leg length",        "mm"  },
+            { "θ",  "Weld angle",                    "deg" },
+        } },
+    };
+    if (auto it = map.find(detail); it != map.end()) return it->second;
+    else throw std::invalid_argument("Unexpected LEFM constructional detail selection.");
+}
 
 LefmDetail::LefmDetail(QObject* parent) : Detail(parent), _timeUnits("s"), _repCount(1.0) {}
 
 Detail::Approach LefmDetail::approach() const { return Approach::Lefm; }
+
+const QString& LefmDetail::selectedDetail() const { return _selectedDetail; }
+
+void LefmDetail::setSelectedDetail(const QString& detail) {
+    if (detail == _selectedDetail) return;
+    if (!detail.isEmpty() && !availableDetails().contains(detail))
+        throw std::invalid_argument("Unexpected LEFM constructional detail selection.");
+    _selectedDetail = detail;
+    emit modified();
+}
 
 bool LefmDetail::ignoreTime() const { return _ignoreTime; }
 

@@ -22,6 +22,9 @@
     <Filter Include="Resource\StyleSheets">
       <UniqueIdentifier>{ffb70fcd-9f3c-4902-a5f3-31592e0596d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\Graphics\LefmDetails">
+      <UniqueIdentifier>{265e8538-6003-44c9-88ca-ce586e4fcaa3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Matrix.cpp">
@@ -66,6 +69,12 @@
     <ClCompile Include="Source\Model\LefmDetail.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Gui\DetailSelectionTab.cpp">
+      <Filter>Source\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gui\ParisLawTab.cpp">
+      <Filter>Source\Gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -107,6 +116,12 @@
       <Filter>Resource\Graphics</Filter>
     </None>
     <None Include="Resource\Graphics\LefmApproach.svg">
+      <Filter>Resource\Graphics</Filter>
+    </None>
+    <None Include="Resource\Graphics\LefmDetails\IIW - Cruciform joint K-butt weld.svg">
+      <Filter>Resource\Graphics\LefmDetails</Filter>
+    </None>
+    <None Include="Resource\Graphics\ParisLaw.svg">
       <Filter>Resource\Graphics</Filter>
     </None>
   </ItemGroup>
@@ -160,6 +175,12 @@
     </QtMoc>
     <QtMoc Include="Source\Model\LefmDetail.hpp">
       <Filter>Source\Model</Filter>
+    </QtMoc>
+    <QtMoc Include="Source\Gui\DetailSelectionTab.hpp">
+      <Filter>Source\Gui</Filter>
+    </QtMoc>
+    <QtMoc Include="Source\Gui\ParisLawTab.hpp">
+      <Filter>Source\Gui</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

@@ -114,6 +114,16 @@ void MainWindow::buildGui() {
     _lefmNavBar->setStyleSheet(_mainNavBar->styleSheet());
     _sideStack->addWidget(_lefmNavBar);
 
+    // detail selection item
+    _detailSelectionItem = new QListWidgetItem(_lefmNavBar);
+    _detailSelectionItem->setText("Detail Selection");
+    _lefmNavBar->addItem(_detailSelectionItem);
+
+    // paris' law item
+    _parisLawItem = new QListWidgetItem(_lefmNavBar);
+    _parisLawItem->setText("Crack Growth Curve");
+    _lefmNavBar->addItem(_parisLawItem);
+
     // lefm history item
     _lefmHistoryItem = new QListWidgetItem(_lefmNavBar);
     _lefmHistoryItem->setText("Stress-Time History");
@@ -149,6 +159,14 @@ void MainWindow::buildGui() {
     // damage tab
     _damageTab = new DamageTab(_mainStack);
     _mainStack->addWidget(_damageTab);
+
+    // detail selection tab
+    _detailSelectionTab = new DetailSelectionTab(_mainStack);
+    _mainStack->addWidget(_detailSelectionTab);
+
+    // paris' law tab
+    _parisLawTab = new ParisLawTab(_mainStack);
+    _mainStack->addWidget(_parisLawTab);
 
     // connections
     QObject::connect(_homeTab, &HomeTab::editDetailRequestReceived, this, &MainWindow::onEditDetailRequestReceived);
@@ -275,7 +293,15 @@ void MainWindow::onLefmNavBarCurrentRowChanged() {
     if (_detail == nullptr) return;
 
     // show new
-    if (_lefmNavBar->currentItem() == _lefmHistoryItem) {
+    if (_lefmNavBar->currentItem() == _detailSelectionItem) {
+        _mainStack->setCurrentWidget(_detailSelectionTab);
+        _detailSelectionTab->setDetail(dynamic_cast<LefmDetail*>(_detail));
+    }
+    else if (_lefmNavBar->currentItem() == _parisLawItem) {
+        _mainStack->setCurrentWidget(_parisLawTab);
+        _parisLawTab->setDetail(dynamic_cast<LefmDetail*>(_detail));
+    }
+    else if (_lefmNavBar->currentItem() == _lefmHistoryItem) {
         _mainStack->setCurrentWidget(_historyTab);
         _historyTab->setDetail(_detail);
     }

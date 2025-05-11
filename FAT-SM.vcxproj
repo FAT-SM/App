@@ -37,12 +37,12 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.9.0_msvc2022_64</QtInstall>
-    <QtModules>core;gui;widgets;charts;datavisualization;graphs</QtModules>
+    <QtModules>core;gui;widgets;svgwidgets;charts;datavisualization</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.9.0_msvc2022_64</QtInstall>
-    <QtModules>core;gui;widgets;charts;datavisualization;graphs</QtModules>
+    <QtModules>core;gui;widgets;svgwidgets;charts;datavisualization</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
   </PropertyGroup>
@@ -124,7 +124,9 @@
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
     <ClCompile Include="Source\Gui\HomeTab.cpp" />
+    <ClCompile Include="Source\Gui\DetailSelectionTab.cpp" />
     <ClCompile Include="Source\Gui\MainWindow.cpp" />
+    <ClCompile Include="Source\Gui\ParisLawTab.cpp" />
     <ClCompile Include="Source\Gui\RainflowTab.cpp" />
     <ClCompile Include="Source\Gui\SnCurveTab.cpp" />
     <ClCompile Include="Source\Model\Detail.cpp" />
@@ -145,6 +147,8 @@
     <None Include="Resource\Graphics\Calculator.svg" />
     <None Include="Resource\Graphics\Cancel.svg" />
     <None Include="Resource\Graphics\LefmApproach.svg" />
+    <None Include="Resource\Graphics\LefmDetails\IIW - Cruciform joint K-butt weld.svg" />
+    <None Include="Resource\Graphics\ParisLaw.svg" />
     <None Include="Resource\Graphics\Remove.svg" />
     <None Include="Resource\Graphics\Edit.svg" />
     <None Include="Resource\Graphics\Home.svg" />
@@ -167,6 +171,8 @@
     <QtMoc Include="Source\Gui\MainWindow.hpp" />
     <QtMoc Include="Source\Gui\HistoryTab.hpp" />
     <QtMoc Include="Source\Gui\DamageTab.hpp" />
+    <QtMoc Include="Source\Gui\DetailSelectionTab.hpp" />
+    <QtMoc Include="Source\Gui\ParisLawTab.hpp" />
     <ClInclude Include="Source\Model.hpp" />
     <QtMoc Include="Source\Model\Project.hpp" />
     <QtMoc Include="Source\Model\LefmDetail.hpp" />

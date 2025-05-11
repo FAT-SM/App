@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore>
+#include <tuple>
 #include <vector>
 #include "Core.hpp"
 #include "Model/Detail.hpp"
@@ -9,7 +10,16 @@
 class LefmDetail : public Detail {
     Q_OBJECT
 
+public:
+
+    /* Returns the available LEFM details. */
+    static const QStringList& availableDetails();
+
+    /* Returns the parameters associated with the chosen LEFM detail. */
+    static const std::vector<std::tuple<QString, QString, QString>>& parameters(const QString& detail);
+
 private:
+    QString _selectedDetail;
     bool _ignoreTime;
     QString _timeUnits;
     double _repCount;
@@ -24,6 +34,12 @@ public:
 
     /* The selected approach for the detail analysis. */
     Approach approach() const override;
+
+    /* The selected detail. */
+    const QString& selectedDetail() const;
+
+    /* Sets the selected detail. */
+    void setSelectedDetail(const QString& detail);
 
     /* Flags if the stress-time history does not include a time variable. */
     bool ignoreTime() const override;

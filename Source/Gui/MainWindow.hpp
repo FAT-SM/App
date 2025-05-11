@@ -9,6 +9,8 @@
 #include "Gui/HistoryTab.hpp"
 #include "Gui/RainflowTab.hpp"
 #include "Gui/DamageTab.hpp"
+#include "Gui/DetailSelectionTab.hpp"
+#include "Gui/ParisLawTab.hpp"
 
 /* The main window of the application. */
 class MainWindow : public QMainWindow {
@@ -37,6 +39,8 @@ private:
     QListWidgetItem* _snHistoryItem;
     QListWidgetItem* _snRainflowItem;
     QListWidgetItem* _damageItem;
+    QListWidgetItem* _detailSelectionItem;
+    QListWidgetItem* _parisLawItem;
     QListWidgetItem* _lefmHistoryItem;
     QListWidgetItem* _lefmRainflowItem;
     QStackedWidget* _mainStack;
@@ -45,6 +49,8 @@ private:
     HistoryTab* _historyTab;
     RainflowTab* _rainflowTab;
     DamageTab* _damageTab;
+    DetailSelectionTab* _detailSelectionTab;
+    ParisLawTab* _parisLawTab;
     Module _module;
     Project* _project;
     Detail* _detail;
