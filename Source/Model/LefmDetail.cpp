@@ -1,5 +1,4 @@
 ﻿#include <stdexcept>
-#include <unordered_map>
 #include "Model/LefmDetail.hpp"
 
 const QStringList& LefmDetail::availableDetails() {
@@ -36,8 +35,59 @@ void LefmDetail::setSelectedDetail(const QString& detail) {
     if (!detail.isEmpty() && !availableDetails().contains(detail))
         throw std::invalid_argument("Unexpected LEFM constructional detail selection.");
     _selectedDetail = detail;
+    _paramValues.reset();
+    // TO DO: CLEAR DETAIL-BASED RESULTS
     emit modified();
 }
+
+double LefmDetail::parameterValue(const QString& symbol) const {
+    if (!_paramValues.has_value()) throw std::logic_error("Detail parameters not set.");
+    if (auto it = (*_paramValues).find(symbol); it != (*_paramValues).end()) return it->second;
+    else throw std::invalid_argument("Invalid parameter symbol.");
+}
+
+void LefmDetail::setParameterValues(const std::unordered_map<QString, double>& params) {
+    try {
+        if (_selectedDetail == "IIW - Cruciform joint K-butt weld") {
+            double A  = params.at("A");  // Weld throat size, mm
+            double a₀ = params.at("a₀"); // Surface crack depth (initial), mm
+            double H  = params.at("H");  // Fillet weld leg length, mm
+            double T  = params.at("T");  // Attachment plate thickness, mm
+            double t  = params.at("t");  // Main plate thickness, mm
+            double W  = params.at("W");  // Fillet weld leg length, mm
+            double θ  = params.at("θ");  // Weld angle, deg
+            if (A <= 0.0) throw std::invalid_argument("'A' must be positive.");
+            if (a₀ <= 0.0) throw std::invalid_argument("'a₀' must be positive.");
+            if (H <= 0.0) throw std::invalid_argument("'H' must be positive.");
+            if (T <= 0.0) throw std::invalid_argument("'T' must be positive.");
+            if (t <= 0.0) throw std::invalid_argument("'t' must be positive.");
+            if (W <= 0.0) throw std::invalid_argument("'W' must be positive.");
+            if (θ < 15 || θ > 60) throw std::invalid_argument("'θ' must be between 15° and 60°.");
+            if (H/T < 0.2 || H/T > 1.0) throw std::invalid_argument("'H/T' must be between 0.2 and 1.");
+            if (W/T < 0.2 || W/T > 1.0) throw std::invalid_argument("'W/T' must be between 0.2 and 1.");
+            if (A/T < 0.175 || A/T > 1.3) throw std::invalid_argument("'A/T' must be between 0.175 and 1.3.");
+            if (t/T < 0.5 || t/T > 20) throw std::invalid_argument("'t/T' must be between 0.5 and 20.");
+            if (a₀ >= T) throw std::invalid_argument("'a₀' must be less than 'T'.");
+            _paramValues = {
+                {  "A", A  },
+                { "a₀", a₀ },
+                {  "H", H  },
+                {  "T", T  },
+                {  "t", t  },
+                {  "W", W  },
+                {  "θ", θ  },
+            };
+        }
+        else throw std::logic_error("Not implemented.");
+    }
+    catch (const std::out_of_range& e) {
+        throw std::invalid_argument("Invalid parameter symbol.");
+    }
+    // TO DO: CLEAR DETAIL-BASED RESULTS
+    emit modified();
+}
+
+bool LefmDetail::hasParameters() const { return _paramValues.has_value(); }
 
 bool LefmDetail::ignoreTime() const { return _ignoreTime; }
 

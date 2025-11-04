@@ -39,4 +39,7 @@ public:
     /* On: detail selected. */
     void onDetailSelected();
 
+    /* On: edit table button clicked. */
+    void onEditTableButtonClicked();
+
 };

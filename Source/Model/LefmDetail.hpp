@@ -3,6 +3,8 @@
 #include <QtCore>
 #include <tuple>
 #include <vector>
+#include <optional>
+#include <unordered_map>
 #include "Core.hpp"
 #include "Model/Detail.hpp"
 
@@ -20,6 +22,7 @@ public:
 
 private:
     QString _selectedDetail;
+    std::optional<std::unordered_map<QString, double>> _paramValues;
     bool _ignoreTime;
     QString _timeUnits;
     double _repCount;
@@ -40,6 +43,15 @@ public:
 
     /* Sets the selected detail. */
     void setSelectedDetail(const QString& detail);
+
+    /* Returns a parameter value by its symbol. */
+    double parameterValue(const QString& symbol) const;
+
+    /* Sets the parameter values by their symbols. */
+    void setParameterValues(const std::unordered_map<QString, double>& params);
+
+    /* Flags if the detail parameters have been set. */
+    bool hasParameters() const;
 
     /* Flags if the stress-time history does not include a time variable. */
     bool ignoreTime() const override;

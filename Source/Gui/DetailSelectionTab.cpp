@@ -1,4 +1,5 @@
-#include <tuple>
+﻿#include <tuple>
+#include "Gui/EditTableDialog.hpp"
 #include "Gui/DetailSelectionTab.hpp"
 
 void DetailSelectionTab::buildGui() {
@@ -58,6 +59,7 @@ void DetailSelectionTab::buildGui() {
 
     // connections
     connect(_constructionalDetailBox, &QComboBox::activated, this, &DetailSelectionTab::onDetailSelected);
+    connect(_editParametersTableButton, &QPushButton::clicked, this, &DetailSelectionTab::onEditTableButtonClicked);
 
 }
 
@@ -72,22 +74,28 @@ void DetailSelectionTab::refreshGui() {
     } else {
         _constructionalDetailBox->setEnabled(true);
         _parametersTable->setEnabled(true);
-        _editParametersTableButton->setEnabled(true);
         if (_detail->selectedDetail().isEmpty()) {
+            _constructionalDetailBox->setCurrentIndex(0);
             _svgWidget->load(QByteArray());
             _parametersTable->clearContents();
             _parametersTable->setRowCount(0);
+            _editParametersTableButton->setEnabled(false);
         } else {
+            _constructionalDetailBox->setCurrentText(_detail->selectedDetail());
             _svgWidget->load(QString(":/Graphics/LefmDetails/%1.svg").arg(_detail->selectedDetail()));
             _svgWidget->renderer()->setAspectRatioMode(Qt::AspectRatioMode::KeepAspectRatio);
             const auto& parameters = LefmDetail::parameters(_detail->selectedDetail());
             QStringList verticalHeaderLabels {};
             _parametersTable->setRowCount(parameters.size());
             for (int i = 0; i < parameters.size(); ++i) {
-                const auto& [name, description, units] = parameters[i];
-                verticalHeaderLabels.push_back(QString("%1, %2 [%3]").arg(description).arg(name).arg(units));
+                const auto& [symbol, description, units] = parameters[i];
+                verticalHeaderLabels.push_back(QString("%1, %2 [%3]").arg(description).arg(symbol).arg(units));
+                if (_detail->hasParameters())
+                    _parametersTable->setItem(i, 0, new QTableWidgetItem(
+                        QString::number(_detail->parameterValue(symbol), 'g', 5)));
             }
             _parametersTable->setVerticalHeaderLabels(verticalHeaderLabels);
+            _editParametersTableButton->setEnabled(true);
         }
     }
 }
@@ -109,4 +117,46 @@ void DetailSelectionTab::onDetailSelected() {
     if (_detail == nullptr) return;
     if (_constructionalDetailBox->currentText() == "<Select Constructional Detail>") _detail->setSelectedDetail("");
     else _detail->setSelectedDetail(_constructionalDetailBox->currentText());
+}
+
+void DetailSelectionTab::onEditTableButtonClicked() {
+    if (_detail == nullptr) return;
+    const auto& pSpec = LefmDetail::parameters(_detail->selectedDetail());
+    EditTableDialog dialog(this, [this, &pSpec](const Matrix<QString>& rawData) {
+        try {
+            std::unordered_map<QString, double> paramValues;
+            for (int i = 0; i < rawData.rowCount(); ++i) {
+                const auto& symbol = std::get<0>(pSpec[i]);
+                bool ok = false;
+                double value = rawData.at(i, 0).toDouble(&ok);
+                if (!ok) throw std::runtime_error(QString("Could not parse value at row %1.").arg(i + 1).toStdString());
+                paramValues[symbol] = value;
+            }
+            _detail->setParameterValues(paramValues);
+            return true;
+        }
+        catch (const std::exception& e) {
+            QMessageBox::critical(this, "Error",
+                QString("Invalid constructional detail parameters:\n%1").arg(e.what()));
+            return false;
+        }
+        return false;
+    });
+    dialog.setRowCount(pSpec.size());
+    dialog.setColumnCount(1);
+    dialog.setFixedRowCount(true);
+    dialog.setFixedColumnCount(true);
+    QStringList rowLabels{};
+    for (const auto& [symbol, description, units] : pSpec)
+        rowLabels.push_back(QString("%1, %2 [%3]").arg(description).arg(symbol).arg(units));
+    dialog.setRowLabels(rowLabels);
+    dialog.setColumnLabels({ "Parameter Value" });
+    dialog.setStretchColumns(true);
+    if (_detail->hasParameters()) {
+        Matrix<double> values(pSpec.size(), 1);
+        for (int i = 0; i < pSpec.size(); ++i) values.at(i) = _detail->parameterValue(std::get<0>(pSpec[i]));
+        dialog.setTableData(values);
+    }
+    dialog.resize(400, 500);
+    dialog.exec();
 }
