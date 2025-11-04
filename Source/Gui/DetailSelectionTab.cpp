@@ -142,19 +142,21 @@ void DetailSelectionTab::onEditTableButtonClicked() {
         }
         return false;
     });
-    dialog.setRowCount(pSpec.size());
+    dialog.setRowCount(pSpec.size() - 2);
     dialog.setColumnCount(1);
     dialog.setFixedRowCount(true);
     dialog.setFixedColumnCount(true);
     QStringList rowLabels{};
-    for (const auto& [symbol, description, units] : pSpec)
+    for (int i = 0; i < pSpec.size() - 2; ++i) {
+        const auto& [symbol, description, units] = pSpec[i];
         rowLabels.push_back(QString("%1, %2 [%3]").arg(description).arg(symbol).arg(units));
+    }
     dialog.setRowLabels(rowLabels);
     dialog.setColumnLabels({ "Parameter Value" });
     dialog.setStretchColumns(true);
     if (_detail->hasParameters()) {
-        Matrix<double> values(pSpec.size(), 1);
-        for (int i = 0; i < pSpec.size(); ++i) values.at(i) = _detail->parameterValue(std::get<0>(pSpec[i]));
+        Matrix<double> values(pSpec.size() - 2, 1);
+        for (int i = 0; i < values.rowCount(); ++i) values.at(i) = _detail->parameterValue(std::get<0>(pSpec[i]));
         dialog.setTableData(values);
     }
     dialog.resize(400, 500);

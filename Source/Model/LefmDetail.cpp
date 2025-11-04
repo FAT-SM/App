@@ -1,4 +1,6 @@
-﻿#include <stdexcept>
+﻿#include <cmath>
+#include <numbers>
+#include <stdexcept>
 #include "Model/LefmDetail.hpp"
 
 const QStringList& LefmDetail::availableDetails() {
@@ -11,12 +13,12 @@ const QStringList& LefmDetail::availableDetails() {
 const std::vector<std::tuple<QString, QString, QString>>& LefmDetail::parameters(const QString& detail) {
     static const std::unordered_map<QString, std::vector<std::tuple<QString, QString, QString>>> map {
         { "IIW - Cruciform joint K-butt weld", {
-            { "A",  "Weld throat size",              "mm"  },
             { "a₀", "Surface crack depth (initial)", "mm"  },
             { "H",  "Fillet weld leg length",        "mm"  },
             { "T",  "Attachment plate thickness",    "mm"  },
             { "t",  "Main plate thickness",          "mm"  },
             { "W",  "Fillet weld leg length",        "mm"  },
+            { "A",  "Weld throat size",              "mm"  },
             { "θ",  "Weld angle",                    "deg" },
         } },
     };
@@ -49,13 +51,13 @@ double LefmDetail::parameterValue(const QString& symbol) const {
 void LefmDetail::setParameterValues(const std::unordered_map<QString, double>& params) {
     try {
         if (_selectedDetail == "IIW - Cruciform joint K-butt weld") {
-            double A  = params.at("A");  // Weld throat size, mm
-            double a₀ = params.at("a₀"); // Surface crack depth (initial), mm
-            double H  = params.at("H");  // Fillet weld leg length, mm
-            double T  = params.at("T");  // Attachment plate thickness, mm
-            double t  = params.at("t");  // Main plate thickness, mm
-            double W  = params.at("W");  // Fillet weld leg length, mm
-            double θ  = params.at("θ");  // Weld angle, deg
+            double a₀ = params.at("a₀");                        // Surface crack depth (initial), mm
+            double H  = params.at("H");                         // Fillet weld leg length, mm
+            double T  = params.at("T");                         // Attachment plate thickness, mm
+            double t  = params.at("t");                         // Main plate thickness, mm
+            double W  = params.at("W");                         // Fillet weld leg length, mm
+            double θ  = std::atan(H/W)*180.0/ std::numbers::pi; // Weld angle, deg
+            double A = H * std::cos(θ*std::numbers::pi/180.0);  // Weld throat size, mm
             if (A <= 0.0) throw std::invalid_argument("'A' must be positive.");
             if (a₀ <= 0.0) throw std::invalid_argument("'a₀' must be positive.");
             if (H <= 0.0) throw std::invalid_argument("'H' must be positive.");
