@@ -91,6 +91,46 @@ void LefmDetail::setParameterValues(const std::unordered_map<QString, double>& p
 
 bool LefmDetail::hasParameters() const { return _paramValues.has_value(); }
 
+std::optional<double> LefmDetail::parisCoefficient() const { return _parisCoefficient; }
+
+void LefmDetail::setParisCoefficient(double parisCoefficient) {
+    if (_parisCoefficient && parisCoefficient == *_parisCoefficient) return;
+    if (parisCoefficient <= 0.0) throw std::invalid_argument("A positive value is required.");
+    _parisCoefficient = parisCoefficient;
+    // TO DO: CLEAR RAINFLOW-BASED RESULTS
+    emit modified();
+}
+
+std::optional<double> LefmDetail::parisExponent() const { return _parisExponent; }
+
+void LefmDetail::setParisExponent(double parisExponent) {
+    if (_parisExponent && parisExponent == *_parisExponent) return;
+    if (parisExponent <= 0.0) throw std::invalid_argument("A positive value is required.");
+    _parisExponent = parisExponent;
+    // TO DO: CLEAR RAINFLOW-BASED RESULTS
+    emit modified();
+}
+
+std::optional<double> LefmDetail::sifThreshold() const { return _sifThreshold; }
+
+void LefmDetail::setSifThreshold(double sifThreshold) {
+    if (_sifThreshold && sifThreshold == *_sifThreshold) return;
+    if (sifThreshold <= 0.0) throw std::invalid_argument("A positive value is required.");
+    _sifThreshold = sifThreshold;
+    // TO DO: CLEAR RAINFLOW-BASED RESULTS
+    emit modified();
+}
+
+std::optional<double> LefmDetail::sifCritical() const { return _sifCritical; }
+
+void LefmDetail::setSifCritical(double sifCritical) {
+    if (_sifCritical && sifCritical == *_sifCritical) return;
+    if (sifCritical <= 0.0) throw std::invalid_argument("A positive value is required.");
+    _sifCritical = sifCritical;
+    // TO DO: CLEAR RAINFLOW-BASED RESULTS
+    emit modified();
+}
+
 bool LefmDetail::ignoreTime() const { return _ignoreTime; }
 
 void LefmDetail::setIgnoreTime(bool ignoreTime) {

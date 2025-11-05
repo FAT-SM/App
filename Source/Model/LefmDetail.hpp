@@ -23,6 +23,10 @@ public:
 private:
     QString _selectedDetail;
     std::optional<std::unordered_map<QString, double>> _paramValues;
+    std::optional<double> _parisCoefficient;
+    std::optional<double> _parisExponent;
+    std::optional<double> _sifThreshold;
+    std::optional<double> _sifCritical;
     bool _ignoreTime;
     QString _timeUnits;
     double _repCount;
@@ -52,6 +56,30 @@ public:
 
     /* Flags if the detail parameters have been set. */
     bool hasParameters() const;
+
+    /* The Paris' law coefficient. */
+    std::optional<double> parisCoefficient() const;
+
+    /* Sets the Paris' law coefficient. */
+    void setParisCoefficient(double parisCoefficient);
+
+    /* The Paris' law exponent. */
+    std::optional<double> parisExponent() const;
+
+    /* Sets the Paris' law exponent. */
+    void setParisExponent(double parisExponent);
+
+    /* The stress intensity factor threshold. */
+    std::optional<double> sifThreshold() const;
+
+    /* Sets the stress intensity factor threshold. */
+    void setSifThreshold(double sifThreshold);
+
+    /* The critical stress intensity factor. */
+    std::optional<double> sifCritical() const;
+
+    /* Sets the critical stress intensity factor. */
+    void setSifCritical(double sifCritical);
 
     /* Flags if the stress-time history does not include a time variable. */
     bool ignoreTime() const override;

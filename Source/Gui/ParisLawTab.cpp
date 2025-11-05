@@ -84,23 +84,37 @@ void ParisLawTab::buildGui() {
     _layout->setColumnStretch(0, 0);
     _layout->setColumnStretch(1, 1);
 
+    // connections
+    connect(_parisLawCoefficientBox, &QLineEdit::editingFinished, this, &ParisLawTab::onParisLawCoefficientBoxEdited);
+    connect(_parisLawExponentBox, &QLineEdit::editingFinished, this, &ParisLawTab::onParisLawExponentBoxEdited);
+    connect(_sifThresholdBox, &QLineEdit::editingFinished, this, &ParisLawTab::onSifThresholdBoxEdited);
+    connect(_sifCriticalBox, &QLineEdit::editingFinished, this, &ParisLawTab::onSifCriticalBoxEdited);
+
 }
 
 void ParisLawTab::refreshGui() {
     if (_detail == nullptr) {
-
-
-
-
-
-
-    }
-    else {
-
-
-
-
-
+        _parisLawCoefficientBox->setEnabled(false);
+        _parisLawExponentBox->setEnabled(false);
+        _sifThresholdBox->setEnabled(false);
+        _sifCriticalBox->setEnabled(false);
+        _parisLawCoefficientBox->clear();
+        _parisLawExponentBox->clear();
+        _sifThresholdBox->clear();
+        _sifCriticalBox->clear();
+    } else {
+        _parisLawCoefficientBox->setEnabled(true);
+        _parisLawExponentBox->setEnabled(true);
+        _sifThresholdBox->setEnabled(true);
+        _sifCriticalBox->setEnabled(true);
+        _parisLawCoefficientBox->setText(
+            _detail->parisCoefficient() ? QString::number(*_detail->parisCoefficient()) : "");
+        _parisLawExponentBox->setText(
+            _detail->parisExponent() ? QString::number(*_detail->parisExponent()) : "");
+        _sifThresholdBox->setText(
+            _detail->sifThreshold() ? QString::number(*_detail->sifThreshold()) : "");
+        _sifCriticalBox->setText(
+            _detail->sifCritical() ? QString::number(*_detail->sifCritical()) : "");
     }
 }
 
@@ -115,4 +129,67 @@ void ParisLawTab::setDetail(LefmDetail* detail) {
     _detail = detail;
     if (_detail != nullptr) QObject::connect(_detail, &LefmDetail::modified, this, &ParisLawTab::refreshGui);
     refreshGui();
+}
+
+void ParisLawTab::onParisLawCoefficientBoxEdited() {
+    if (_detail == nullptr) return;
+    if (!_detail->parisCoefficient() && _parisLawCoefficientBox->text().isEmpty()) return;
+    try {
+        bool ok = false;
+        double value = _parisLawCoefficientBox->text().toDouble(&ok);
+        if (!ok) throw std::invalid_argument("The input must be a valid real number.");
+        else _detail->setParisCoefficient(value);
+    }
+    catch (const std::exception& e) {
+        QMessageBox::critical(this, "Error", QString("Invalid Paris' law coefficient:\n%1").arg(e.what()));
+        _parisLawCoefficientBox->setText(
+            _detail->parisCoefficient() ? QString::number(*_detail->parisCoefficient()) : "");
+    }
+}
+
+void ParisLawTab::onParisLawExponentBoxEdited() {
+    if (_detail == nullptr) return;
+    if (!_detail->parisExponent() && _parisLawExponentBox->text().isEmpty()) return;
+    try {
+        bool ok = false;
+        double value = _parisLawExponentBox->text().toDouble(&ok);
+        if (!ok) throw std::invalid_argument("The input must be a valid real number.");
+        else _detail->setParisExponent(value);
+    }
+    catch (const std::exception& e) {
+        QMessageBox::critical(this, "Error", QString("Invalid Paris' law exponent:\n%1").arg(e.what()));
+        _parisLawExponentBox->setText(_detail->parisExponent() ? QString::number(*_detail->parisExponent()) : "");
+    }
+}
+
+void ParisLawTab::onSifThresholdBoxEdited() {
+    if (_detail == nullptr) return;
+    if (!_detail->sifThreshold() && _sifThresholdBox->text().isEmpty()) return;
+    try {
+        bool ok = false;
+        double value = _sifThresholdBox->text().toDouble(&ok);
+        if (!ok) throw std::invalid_argument("The input must be a valid real number.");
+        else _detail->setSifThreshold(value);
+    }
+    catch (const std::exception& e) {
+        QMessageBox::critical(this, "Error",
+            QString("Invalid threshold stress intensity factor range:\n%1").arg(e.what()));
+        _sifThresholdBox->setText(_detail->sifThreshold() ? QString::number(*_detail->sifThreshold()) : "");
+    }
+}
+
+void ParisLawTab::onSifCriticalBoxEdited() {
+    if (_detail == nullptr) return;
+    if (!_detail->sifCritical() && _sifCriticalBox->text().isEmpty()) return;
+    try {
+        bool ok = false;
+        double value = _sifCriticalBox->text().toDouble(&ok);
+        if (!ok) throw std::invalid_argument("The input must be a valid real number.");
+        else _detail->setSifCritical(value);
+    }
+    catch (const std::exception& e) {
+        QMessageBox::critical(this, "Error",
+            QString("Invalid critical stress intensity factor range:\n%1").arg(e.what()));
+        _sifCriticalBox->setText(_detail->sifCritical() ? QString::number(*_detail->sifCritical()) : "");
+    }
 }

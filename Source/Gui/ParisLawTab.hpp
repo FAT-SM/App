@@ -41,4 +41,16 @@ public:
     /* Sets the current detail. */
     void setDetail(LefmDetail* detail);
 
+    /* On: Paris's law coefficient box edited. */
+    void onParisLawCoefficientBoxEdited();
+
+    /* On: Paris's law exponent box edited. */
+    void onParisLawExponentBoxEdited();
+
+    /* On: stress intensity factor threshold box edited. */
+    void onSifThresholdBoxEdited();
+
+    /* On: critical stress intensity factor box edited. */
+    void onSifCriticalBoxEdited();
+
 };
