@@ -11,6 +11,7 @@
 #include "Gui/DamageTab.hpp"
 #include "Gui/DetailSelectionTab.hpp"
 #include "Gui/ParisLawTab.hpp"
+#include "Gui/RemainingLifeTab.hpp"
 
 /* The main window of the application. */
 class MainWindow : public QMainWindow {
@@ -43,6 +44,7 @@ private:
     QListWidgetItem* _parisLawItem;
     QListWidgetItem* _lefmHistoryItem;
     QListWidgetItem* _lefmRainflowItem;
+    QListWidgetItem* _remainingLifeItem;
     QStackedWidget* _mainStack;
     HomeTab* _homeTab;
     SnCurveTab* _snCurveTab;
@@ -51,6 +53,7 @@ private:
     DamageTab* _damageTab;
     DetailSelectionTab* _detailSelectionTab;
     ParisLawTab* _parisLawTab;
+    RemainingLifeTab* _remainingLifeTab;
     Module _module;
     Project* _project;
     Detail* _detail;

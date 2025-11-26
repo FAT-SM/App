@@ -33,9 +33,16 @@ public:
     T& at(int k);
     const T& at(int k) const;
 
+    /* Returns the maximum value in the matrix. */
+    T& max();
+    const T& max() const;
+
     /* Access to the matrix value at the i-th row and j-th column. */
     T& at(int i, int j);
     const T& at(int i, int j) const;
+
+    /* Total number of elements. */
+    int size() const;
 
     /* The number of rows. */
     int rowCount() const;

@@ -2,6 +2,7 @@
 
 #include <QtCore>
 #include <tuple>
+#include <utility>
 #include <vector>
 #include <optional>
 #include <unordered_map>
@@ -33,6 +34,9 @@ private:
     Matrix<double> _history;
     std::vector<int> _extrema;
     Matrix<double> _rainflow;
+    Matrix<double> _initialCrackSample;
+    std::optional<Matrix<double>> _lifeSample;
+    std::optional<Matrix<QString>> _stopCriteria;
 
 public:
 
@@ -113,5 +117,23 @@ public:
 
     /* Performs the rainflow counting algorithm. */
     void executeRainflowCounting() override;
+
+    /* Sample of initial crack depths. */
+    const Matrix<double>& initialCrackSample() const;
+
+    /* Sets the sample of initial crack depths. */
+    void setInitialCrackSample(const Matrix<double>& sample);
+
+    /* Sample of remaining fatigue life. */
+    const std::optional<Matrix<double>>& lifeSample() const;
+
+    /* Stop criteria for the remaining fatigue life. */
+    const std::optional<Matrix<QString>>& stopCriteria() const;
+
+    /* Compute remaining fatigue life. */
+    void computeRemainingFatigueLife();
+
+    /* Compute remaining fatigue life. */
+    std::pair<double, QString> computeRemainingFatigueLife(double a0);
 
 };

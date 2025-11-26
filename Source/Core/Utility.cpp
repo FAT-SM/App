@@ -1,6 +1,7 @@
 ﻿#include <tuple>
 #include <cmath>
 #include <limits>
+#include <numbers>
 #include <stdexcept>
 #include "Core/Utility.hpp"
 
@@ -160,4 +161,58 @@ Matrix<double> Utility::executeMinerSummation(double category, double resistance
     // done
     return results;
 
+}
+
+std::pair<double, QString> Utility::computeRemainingFatigueLife(const QString& detail,
+    const std::unordered_map<QString, double>& parameters, const Matrix<double>& history,
+    const Matrix<double>& rainflow, double C, double m, double ΔKth, double ΔKcr, double a0) {
+    double sampledTimePeriod = (history.at(history.rowCount() - 1, 0) - history.at(0, 0))/(60*60*24*365.2425); // years
+    auto c = rainflow.getColumn(0);
+    auto Δσ = rainflow.getColumn(1);
+    if (detail == "IIW - Cruciform joint K-butt weld") {
+        double w = parameters.at("w"); // Out-of-plane width         [mm]
+        double H = parameters.at("H"); // Fillet weld leg length     [mm]
+        double T = parameters.at("T"); // Attachment plate thickness [mm]
+        double t = parameters.at("t"); // Main plate thickness       [mm]
+        double W = parameters.at("W"); // Fillet weld leg length     [mm]
+        double A = parameters.at("A"); // Weld throat size           [mm]
+        double θ = parameters.at("θ"); // Weld angle                 [deg]
+        int i = 0;
+        int N = 0;
+        Matrix<double> ΔK(Δσ.size(), 1);
+        double a = a0;
+        double af = T;
+        double rfl = 0.0; // years
+        double dfl = 250.0; // years
+        double π = std::numbers::pi;
+        while (true) {
+            double limit1 = (2*a)/w;
+            if (a >= af) return { rfl, "a ≥ a_f" };
+            if (ΔK.at(i) >= ΔKcr) return {rfl, "ΔK ≥ ΔK_cr"};
+            if (limit1 >= 0.8) return { rfl, "(2*a)/w ≥ 0.8" };
+            if (rfl >= dfl) return { dfl, "RFL ≥ 250 years" };
+            double fw = std::sqrt(1.0/std::cos(π*a/w*std::sqrt(a/T)));
+            double c1 =  0.7061 - 0.4091*H/T + 0.1596*std::pow(H/T, 2) + 0.3739*W/T - 0.1329*std::pow(W/T, 2);
+            double k1 = -0.2434 - 0.3939*H/T + 0.1536*std::pow(H/T, 2) + 0.3004*W/T - 0.0995*std::pow(W/T, 2);
+            double Mk = c1*std::pow(a/T, k1);
+            double Mm = (1.04 + 0.202*std::pow(a/T, 2) - 0.106*std::pow(a/T, 4))/2.464;
+            double Mb = (1.0 - 1.34*a/T - 0.03*std::pow(a/T, 2))*Mm;
+            double Y = fw*Mk*Mm;
+            ΔK.at(i) = Y * Δσ.at(i) * std::sqrt(π * a);
+            if (ΔK.at(i) >= ΔKth) {
+                double Δa = c.at(i)*C*std::pow(ΔK.at(i), m);
+                a += Δa;
+            }
+            if (i < Δσ.size() - 1) {
+                ++i;
+            }
+            else {
+                if (ΔK.max() < ΔKth) return { dfl, "ΔK < ΔK_th" };
+                ++N;
+                i = 0;
+            }
+            rfl = sampledTimePeriod*N;
+        }
+    }
+    throw std::logic_error("Not implemented.");
 }

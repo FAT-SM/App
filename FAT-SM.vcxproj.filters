@@ -75,6 +75,9 @@
     <ClCompile Include="Source\Gui\ParisLawTab.cpp">
       <Filter>Source\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Gui\RemainingLifeTab.cpp">
+      <Filter>Source\Gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -180,6 +183,9 @@
       <Filter>Source\Gui</Filter>
     </QtMoc>
     <QtMoc Include="Source\Gui\ParisLawTab.hpp">
+      <Filter>Source\Gui</Filter>
+    </QtMoc>
+    <QtMoc Include="Source\Gui\RemainingLifeTab.hpp">
       <Filter>Source\Gui</Filter>
     </QtMoc>
   </ItemGroup>

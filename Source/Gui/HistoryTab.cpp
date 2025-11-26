@@ -160,6 +160,8 @@ void HistoryTab::buildGui() {
 
 void HistoryTab::refreshGui() {
     if (_detail == nullptr) {
+        _timeGroupBox->setVisible(true);
+        _repsGroupBox->setVisible(true);
         _timeGroupBox->setEnabled(false);
         _timeUnitsBox->setEnabled(false);
         _repsBox->setEnabled(false);
@@ -172,6 +174,8 @@ void HistoryTab::refreshGui() {
         _sampleTable->setRowCount(0);
         _sampleTable->setColumnCount(0);
     } else {
+        _timeGroupBox->setVisible(_detail->approach() != Detail::Approach::Lefm);
+        _repsGroupBox->setVisible(_detail->approach() != Detail::Approach::Lefm);
         _timeGroupBox->setEnabled(true);
         _timeUnitsBox->setEnabled(!_detail->ignoreTime());
         _repsBox->setEnabled(true);

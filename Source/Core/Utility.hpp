@@ -1,7 +1,9 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
+#include <unordered_map>
 #include <utility>
+#include <QtCore>
 #include "Core/Matrix.hpp"
 
 /* Static class of utilities. */
@@ -27,5 +29,10 @@ public:
     /* Performs Miner's summation algorithm. */
     static Matrix<double> executeMinerSummation(double category, double resistanceFactor, const Matrix<double>& slopes,
         const Matrix<double>& rainflow, double stressFactor);
+
+    /* Computes the remaining fatigue life of a LEFM detail. */
+    static std::pair<double, QString> computeRemainingFatigueLife(const QString& detail,
+        const std::unordered_map<QString, double>& parameters, const Matrix<double>& history,
+        const Matrix<double>& rainflow, double C, double m, double ΔKth, double ΔKcr, double a0);
 
 };

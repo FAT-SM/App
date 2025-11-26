@@ -134,6 +134,11 @@ void MainWindow::buildGui() {
     _lefmRainflowItem->setText("Rainflow Counting");
     _lefmNavBar->addItem(_lefmRainflowItem);
 
+    // remaining life item
+    _remainingLifeItem = new QListWidgetItem(_lefmNavBar);
+    _remainingLifeItem->setText("Remaining Fatigue Life");
+    _lefmNavBar->addItem(_remainingLifeItem);
+
     // main stack
     _mainStack = new QStackedWidget(_centralWidget);
     _mainStack->setProperty("parent", "true");
@@ -167,6 +172,10 @@ void MainWindow::buildGui() {
     // paris' law tab
     _parisLawTab = new ParisLawTab(_mainStack);
     _mainStack->addWidget(_parisLawTab);
+
+    // remaining life tab
+    _remainingLifeTab = new RemainingLifeTab(_mainStack);
+    _mainStack->addWidget(_remainingLifeTab);
 
     // connections
     QObject::connect(_homeTab, &HomeTab::editDetailRequestReceived, this, &MainWindow::onEditDetailRequestReceived);
@@ -308,6 +317,10 @@ void MainWindow::onLefmNavBarCurrentRowChanged() {
     else if (_lefmNavBar->currentItem() == _lefmRainflowItem) {
         _mainStack->setCurrentWidget(_rainflowTab);
         _rainflowTab->setDetail(_detail);
+    }
+    else if (_lefmNavBar->currentItem() == _remainingLifeItem) {
+        _mainStack->setCurrentWidget(_remainingLifeTab);
+        _remainingLifeTab->setDetail(dynamic_cast<LefmDetail*>(_detail));
     }
 
 }

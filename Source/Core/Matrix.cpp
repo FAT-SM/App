@@ -1,5 +1,6 @@
 #include <string>
 #include <QString>
+#include <algorithm>
 #include <stdexcept>
 #include "Core/Matrix.hpp"
 
@@ -54,6 +55,21 @@ const T& Matrix<T>::at(int i, int j) const {
     if (j < 0 || j >= _columnCount) throw std::out_of_range("Column index out of range.");
     return _data[i*_columnCount + j];
 }
+
+template<typename T>
+T& Matrix<T>::max() {
+    if (_data.empty()) throw std::runtime_error("Empty matrix.");
+    return *std::max_element(_data.begin(), _data.end());
+}
+
+template<typename T>
+const T& Matrix<T>::max() const {
+    if (_data.empty()) throw std::runtime_error("Empty matrix.");
+    return *std::max_element(_data.begin(), _data.end());
+}
+
+template<typename T>
+int Matrix<T>::size() const { return _rowCount*_columnCount; }
 
 template<typename T>
 int Matrix<T>::rowCount() const { return _rowCount; }
