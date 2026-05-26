@@ -51,7 +51,7 @@
     <ClCompile Include="Source\Gui\MainWindow.cpp">
       <Filter>Source\Gui</Filter>
     </ClCompile>
-    <ClCompile Include="Source\_main_.cpp">
+    <ClCompile Include="Source\main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\Gui\HistoryTab.cpp">

@@ -134,7 +134,7 @@
     <ClCompile Include="Source\Model\Project.cpp" />
     <ClCompile Include="Source\Model\LefmDetail.cpp" />
     <ClCompile Include="Source\Model\SnDetail.cpp" />
-    <ClCompile Include="Source\_main_.cpp">
+    <ClCompile Include="Source\main.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>

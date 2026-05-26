@@ -26,10 +26,12 @@ const std::vector<std::tuple<QString, QString, QString>>& LefmDetail::parameters
     else throw std::invalid_argument("Unexpected LEFM constructional detail selection.");
 }
 
-LefmDetail::LefmDetail(QObject* parent) : Detail(parent), _timeUnits("s"), _repCount(1.0), _initialCrackSample(3, 1) {
-    _initialCrackSample.at(0) = 0.01;
-    _initialCrackSample.at(1) = 0.1;
-    _initialCrackSample.at(2) = 1.0;
+LefmDetail::LefmDetail(QObject* parent) : Detail(parent), _timeUnits("s"), _repCount(1.0), _initialCrackSample(5, 1) {
+    _initialCrackSample.at(0) =  0.5;
+    _initialCrackSample.at(1) =  1.0;
+    _initialCrackSample.at(2) =  5.0;
+    _initialCrackSample.at(3) = 10.0;
+    _initialCrackSample.at(4) = 50.0;
 }
 
 Detail::Approach LefmDetail::approach() const { return Approach::Lefm; }
