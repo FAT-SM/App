@@ -97,3 +97,9 @@ GPLv3 - GNU General Public License v3.0
 If you use FAT-SM in your work, please cite the associated publication:
 
 *(To be updated upon publication.)*
+
+---
+
+<img width=520 src="https://github.com/user-attachments/assets/c669e30d-8dbf-41e0-836a-b76a06495fab" />
+<img width=520 src="https://github.com/user-attachments/assets/30ae2c88-f96f-4792-ade2-a61b7ae6426d" />
+<img width=520 src="https://github.com/user-attachments/assets/8add59f9-a531-4710-b950-ca31bfda558b" />
