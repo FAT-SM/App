@@ -24,9 +24,15 @@ void EditTableDialog::buildGui() {
 
     // paste action
     _pasteAction = new QAction(_toolsMenu);
-    _pasteAction->setIcon(QIcon(":/Graphics/PasteTable.svg"));
+    _pasteAction->setIcon(QIcon(":/Graphics/Clipboard.svg"));
     _pasteAction->setText("Paste from Clipboard");
     _toolsMenu->addAction(_pasteAction);
+
+    // load action
+    _loadAction = new QAction(_toolsMenu);
+    _loadAction->setIcon(QIcon(":/Graphics/OpenFile.svg"));
+    _loadAction->setText("Load from File");
+    _toolsMenu->addAction(_loadAction);
 
     // clear action
     _clearAction = new QAction(_toolsMenu);
@@ -107,6 +113,7 @@ void EditTableDialog::buildGui() {
     QObject::connect(_okButton, &QPushButton::clicked, this, &EditTableDialog::onOkButtonClicked);
     QObject::connect(_cancelButton, &QPushButton::clicked, this, &EditTableDialog::close);
     QObject::connect(_pasteAction, &QAction::triggered, this, &EditTableDialog::onPasteActionTriggered);
+    QObject::connect(_loadAction, &QAction::triggered, this, &EditTableDialog::onLoadActionTriggered);
     QObject::connect(_clearAction, &QAction::triggered, this, &EditTableDialog::onClearActionTriggered);
 
 }
@@ -286,6 +293,67 @@ void EditTableDialog::onPasteActionTriggered() {
         for (const auto& token : line.split('\t')) {
             if (j < 0 || j >= columnCount) break;
             rawData.at(i, j) = token;
+            ++j;
+        }
+        ++i;
+    }
+
+    // update gui
+    if (_rowCountBox->isEnabled()) setRowCount(rowCount);
+    if (_columnCountBox->isEnabled()) setColumnCount(columnCount);
+    setTableData(rawData);
+
+}
+
+void EditTableDialog::onLoadActionTriggered() {
+
+    // prompt user for file
+    QString fileName = QFileDialog::getOpenFileName(
+        this,
+        "Load Table from File",
+        QString(),
+        "CSV Files (*.csv);;Text Files (*.txt)"
+    );
+    if (fileName.isEmpty()) return;
+
+    // get file text
+    QString fileText;
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, "Error", "Could not open the selected file.");
+        file.close();
+        return;
+    }
+    else {
+        QTextStream textStream(&file);
+        fileText = textStream.readAll().trimmed();
+        file.close();
+    }
+
+    // normalize line endings
+    fileText.replace("\r\n", "\n");
+    fileText.replace('\r', '\n');
+    if (fileText.isEmpty()) return;
+
+    // auto-detect delimiter
+    QChar delimiter = fileText.contains('\t') ? '\t'
+        : fileText.contains(';') ? ';'
+        : ',';
+
+    // allocate storage
+    int rowCount = fileText.count('\n') + 1;
+    int columnCount = fileText.count(delimiter)/rowCount + 1;
+    if (rowCount*columnCount < 1) return;
+    Matrix<QString> rawData(rowCount, columnCount);
+
+    // get data
+    int i = 0;
+    for (const auto& line : fileText.split('\n')) {
+        if (i < 0 || i >= rowCount) break;
+        int j = 0;
+        for (const auto& token : line.trimmed().split(delimiter)) {
+            if (j < 0 || j >= columnCount) break;
+            rawData.at(i, j) = token.trimmed();
             ++j;
         }
         ++i;

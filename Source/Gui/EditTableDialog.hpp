@@ -15,6 +15,7 @@ private:
     QMenuBar* _menuBar;
     QMenu* _toolsMenu;
     QAction* _pasteAction;
+    QAction* _loadAction;
     QAction* _clearAction;
     QWidget* _centralWidget;
     QGridLayout* _centralWidgetLayout;
@@ -82,6 +83,9 @@ public:
 
     /* On: paste action triggered. */
     void onPasteActionTriggered();
+
+    /* On: load action triggered. */
+    void onLoadActionTriggered();
 
     /* On: clear action triggered. */
     void onClearActionTriggered();

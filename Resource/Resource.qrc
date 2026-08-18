@@ -6,8 +6,9 @@
         <file>Graphics/SnApproach.svg</file>
         <file>Graphics/LefmApproach.svg</file>
         <file>Graphics/Info.svg</file>
-        <file>Graphics/PasteTable.svg</file>
-        <file>Graphics/ClearTable.svg</file>
+		<file>Graphics/Clipboard.svg</file>
+		<file>Graphics/OpenFile.svg</file>
+		<file>Graphics/ClearTable.svg</file>
         <file>Graphics/Calculator.svg</file>
         <file>Graphics/Ok.svg</file>
         <file>Graphics/Cancel.svg</file>
